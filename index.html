@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>خطة حفظ القرآن الكريم</title>
+<title>خطّة حفظ القرآن</title>
 <meta name="theme-color" content="#0d5c46" />
 <link rel="manifest" href="manifest.json" />
 <link rel="icon" href="icon-192.png" />
@@ -145,9 +145,41 @@
   }
   .reminder-btn.off{background:#999;}
   .reminder-status{font-size:11px; color:var(--muted); margin-top:8px; line-height:1.7;}
+  .celeb-overlay{
+    position:fixed; inset:0; background:rgba(20,20,15,.55);
+    display:flex; align-items:center; justify-content:center;
+    z-index:100; opacity:0; pointer-events:none; transition:opacity .3s ease;
+    padding:24px;
+  }
+  .celeb-overlay.show{ opacity:1; pointer-events:auto; }
+  .celeb-card{
+    background:linear-gradient(160deg,#fffdf7,#f5ecd6);
+    border:2px solid var(--gold);
+    border-radius:18px;
+    padding:28px 22px;
+    text-align:center;
+    max-width:340px;
+    box-shadow:0 10px 30px rgba(0,0,0,.35);
+    transform:scale(.9); transition:transform .3s ease;
+  }
+  .celeb-overlay.show .celeb-card{ transform:scale(1); }
+  .celeb-card .celeb-text{
+    font-size:19px; font-weight:bold; color:#1f4a3a; line-height:1.9;
+  }
+  .celeb-card button{
+    margin-top:18px; background:var(--s1); color:#fff; border:none;
+    padding:9px 24px; border-radius:10px; font-size:13px; cursor:pointer;
+  }
 </style>
 </head>
 <body>
+
+<div id="celebOverlay" class="celeb-overlay">
+  <div class="celeb-card">
+    <div class="celeb-text" id="celebText"></div>
+    <button id="celebCloseBtn">الحمد لله</button>
+  </div>
+</div>
 
 <header>
   <h1>خطة لحفظ القرآن الكريم كاملًا</h1>
@@ -258,6 +290,7 @@ function toggle(key, el){
   el.classList.toggle("done", state[key]);
   saveState();
   updateProgress();
+  checkCelebrations();
 }
 
 /* ============ RENDER ============ */
@@ -416,6 +449,72 @@ function updateProgress(){
   document.getElementById("overallLabel").textContent = `${arNum(grandDone)} / ${arNum(TOTAL_DAYS)} يومًا (${arNum(pct)}٪)`;
 }
 updateProgress();
+
+/* ============ CELEBRATIONS ============ */
+const celebOverlay = document.getElementById("celebOverlay");
+const celebText = document.getElementById("celebText");
+document.getElementById("celebCloseBtn").addEventListener("click", ()=>{
+  celebOverlay.classList.remove("show");
+});
+
+function showCelebration(msg){
+  celebText.textContent = msg;
+  celebOverlay.classList.add("show");
+}
+
+function checkCelebrations(){
+  let anyNewlyComplete = false;
+
+  stages.forEach(stage=>{
+    const {done,total} = countStageDone(stage);
+    const flagKey = "celeb-"+stage.id;
+    if(total>0 && done===total && !state[flagKey]){
+      state[flagKey] = true;
+      if(!anyNewlyComplete){
+        showCelebration("ما شاء الله قد أتممت المرحلة✨\nثبّتك الله 🤲🏻");
+        anyNewlyComplete = true;
+      }
+    }
+  });
+
+  const {done: fDone, total: fTotal} = countFinalDone();
+  if(fTotal>0 && fDone===fTotal && !state["celeb-sf"]){
+    state["celeb-sf"] = true;
+    if(!anyNewlyComplete){
+      showCelebration("ما شاء الله قد أتممت المرحلة✨\nثبّتك الله 🤲🏻");
+      anyNewlyComplete = true;
+    }
+  }
+
+  let grandDone = 0;
+  stages.forEach(stage=> grandDone += countStageDone(stage).done);
+  grandDone += fDone;
+  if(grandDone===TOTAL_DAYS && !state["celeb-all"]){
+    state["celeb-all"] = true;
+    showCelebration("مبارك لك حفظ كتاب الله ونفع الله بك🤲🏻✨");
+    anyNewlyComplete = true;
+  }
+
+  if(anyNewlyComplete) saveState();
+}
+
+// Silently mark any already-complete groups as celebrated on first load
+// (so re-opening the app doesn't pop congratulation messages for old progress)
+(function primeCelebrationFlags(){
+  let changed = false;
+  stages.forEach(stage=>{
+    const {done,total} = countStageDone(stage);
+    const flagKey = "celeb-"+stage.id;
+    if(total>0 && done===total && !state[flagKey]){ state[flagKey]=true; changed=true; }
+  });
+  const {done: fDone, total: fTotal} = countFinalDone();
+  if(fTotal>0 && fDone===fTotal && !state["celeb-sf"]){ state["celeb-sf"]=true; changed=true; }
+  let grandDone = 0;
+  stages.forEach(stage=> grandDone += countStageDone(stage).done);
+  grandDone += fDone;
+  if(grandDone===TOTAL_DAYS && !state["celeb-all"]){ state["celeb-all"]=true; changed=true; }
+  if(changed) saveState();
+})();
 
 // open first stage by default
 document.getElementById("s1").classList.add("open");
