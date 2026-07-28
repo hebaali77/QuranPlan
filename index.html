@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>خطة حفظ القرآن الكريم</title>
+<meta name="theme-color" content="#0d5c46" />
+<link rel="manifest" href="manifest.json" />
+<link rel="icon" href="icons/icon-192.png" />
+<link rel="apple-touch-icon" href="icons/icon-192.png" />
+<style>
+  :root{
+    --bg:#f5f0e0;
+    --card:#ffffff;
+    --ink:#2b2b28;
+    --muted:#7a756a;
+    --gold:#c9a24b;
+    --line:#e7dfc9;
+    --s1:#0d5c46; --s1-l:#e7f2ee;
+    --s2:#5b4b9e; --s2-l:#efecf9;
+    --s3:#b3436b; --s3-l:#fbeaf0;
+    --s4:#1f6fa8; --s4-l:#e9f3fa;
+    --s5:#a1631f; --s5-l:#faf0e2;
+    --s6:#2a7f7a; --s6-l:#e6f4f3;
+    --sf:#6b4a2b; --sf-l:#f3ece1;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Tahoma","Geeza Pro","Arial",sans-serif;
+    padding-bottom:40px;
+    -webkit-tap-highlight-color:transparent;
+  }
+  header{
+    background:linear-gradient(135deg,#0d5c46,#134f3e);
+    color:#fff;
+    padding:22px 18px 26px;
+    text-align:center;
+    border-bottom:4px solid var(--gold);
+    position:sticky; top:0; z-index:20;
+  }
+  header h1{margin:0 0 4px; font-size:20px;}
+  header p{margin:0; font-size:12.5px; opacity:.85;}
+  .progress-wrap{
+    max-width:520px; margin:16px auto 0; padding:0 18px;
+  }
+  .progress-bar-bg{
+    background:rgba(255,255,255,.25);
+    border-radius:20px; height:14px; overflow:hidden;
+  }
+  .progress-bar-fill{
+    background:var(--gold); height:100%; width:0%;
+    transition:width .4s ease;
+  }
+  .progress-label{font-size:12px; margin-top:6px; opacity:.9;}
+
+  main{max-width:560px; margin:0 auto; padding:16px;}
+
+  .stage{
+    margin-bottom:16px;
+    border-radius:14px;
+    overflow:hidden;
+    border:1px solid var(--line);
+    background:var(--card);
+    box-shadow:0 2px 6px rgba(0,0,0,.05);
+  }
+  .stage-head{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 16px; cursor:pointer; color:#fff;
+  }
+  .stage-head .title{font-size:15px; font-weight:bold;}
+  .stage-head .sub{font-size:11.5px; opacity:.9; margin-top:2px;}
+  .stage-head .chev{font-size:14px; transition:transform .25s;}
+  .stage.open .chev{transform:rotate(180deg);}
+  .stage-mini-progress{
+    height:5px; background:rgba(255,255,255,.35); border-radius:3px; margin-top:8px; overflow:hidden;
+  }
+  .stage-mini-fill{height:100%; background:#fff;}
+
+  .stage-body{display:none; padding:12px 14px 16px;}
+  .stage.open .stage-body{display:block;}
+
+  .juz-card{
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:10px 12px;
+    margin-bottom:10px;
+    background:#fffdf7;
+  }
+  .juz-title{font-size:13.5px; font-weight:bold; margin-bottom:2px;}
+  .juz-range{font-size:11.5px; color:var(--muted); margin-bottom:8px;}
+  .group-label{font-size:11.5px; font-weight:bold; margin:8px 0 5px; color:var(--ink);}
+  .checks{display:flex; flex-wrap:wrap; gap:5px;}
+  .chk{
+    width:26px; height:26px;
+    border:1px solid var(--gold);
+    border-radius:6px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:11px; color:var(--muted);
+    background:#fff; cursor:pointer; user-select:none;
+  }
+  .chk.done{background:var(--gold); color:#fff; border-color:var(--gold);}
+
+  .review-row{
+    margin-top:6px; padding-top:10px; border-top:1px dashed var(--line);
+  }
+
+  .final-block{
+    border:1px solid var(--line); border-radius:10px; padding:10px 12px; margin-bottom:10px; background:#fffdf7;
+  }
+  .final-block .juz-title{margin-bottom:8px;}
+
+  footer{
+    max-width:560px; margin:20px auto 0; padding:0 16px; text-align:center;
+  }
+  .reset-btn{
+    background:none; border:1px solid #b33; color:#b33; padding:8px 16px;
+    border-radius:8px; font-size:12.5px; cursor:pointer;
+  }
+  .tip{font-size:11px; color:var(--muted); margin-top:10px; line-height:1.7;}
+  .install-hint{
+    font-size:11.5px; background:var(--s1-l); border:1px solid var(--line); border-radius:10px;
+    padding:10px 12px; margin:0 0 14px; color:#333; line-height:1.8;
+  }
+  .notes-label{font-size:11.5px; font-weight:bold; margin:10px 0 5px; color:var(--ink);}
+  .notes-box{
+    width:100%; min-height:44px; resize:vertical;
+    border:1px solid var(--line); border-radius:8px; padding:6px 8px;
+    font-family:inherit; font-size:12px; color:var(--ink); background:#fff;
+  }
+  .reminder-card{
+    background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:14px 16px; margin-bottom:16px;
+  }
+  .reminder-card h3{margin:0 0 8px; font-size:14px;}
+  .reminder-row{display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
+  .reminder-row input[type="time"]{
+    border:1px solid var(--line); border-radius:8px; padding:6px 8px; font-size:13px; font-family:inherit;
+  }
+  .reminder-btn{
+    background:var(--s1); color:#fff; border:none; padding:8px 14px;
+    border-radius:8px; font-size:12.5px; cursor:pointer;
+  }
+  .reminder-btn.off{background:#999;}
+  .reminder-status{font-size:11px; color:var(--muted); margin-top:8px; line-height:1.7;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>خطة لحفظ القرآن الكريم كاملًا</h1>
+  <p>٣٠ جزءًا · ٧٨٨ يومًا · ٦ مراحل رئيسة + مرحلة ختامية</p>
+  <div class="progress-wrap">
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="overallFill"></div></div>
+    <div class="progress-label" id="overallLabel">٠ / ٧٨٨ يومًا (٠٪)</div>
+  </div>
+</header>
+
+<main>
+  <div class="install-hint">
+ 📌 اضغط على المربع بعد انتهاء الحفظ أو التثبيت.
+  </div>
+  <div class="reminder-card">
+    <h3>⏰ تذكير يومي بالورد</h3>
+    <div class="reminder-row">
+      <input type="time" id="reminderTime" value="20:00" />
+      <button class="reminder-btn" id="reminderToggleBtn">تفعيل التذكير</button>
+    </div>
+    <div class="reminder-status" id="reminderStatus">التذكير غير مفعّل حاليًا.</div>
+  </div>
+
+  <div id="stagesContainer"></div>
+
+  <footer>
+    <button class="reset-btn" id="resetBtn">إعادة تعيين كل التقدّم</button>
+    <p class="tip">
+      التكرار: كرّر كل مقطع ثلاث مرات (قراءة، استرجاع نصفي، حفظ كامل) قبل الانتقال للمقطع التالي.<br/>
+      خصّص ١٠ دقائق يوميًا لمراجعة المحفوظ السابق، ولا تكتفِ بمقطع اليوم وحده.
+    </p>
+  </footer>
+</main>
+
+<script>
+/* ============ DATA ============ */
+const juzList = [
+ {n:1,  from:"الفاتحة",        to:"البقرة (٢:١٤١)"},
+ {n:2,  from:"البقرة (٢:١٤٢)", to:"البقرة (٢:٢٥٢)"},
+ {n:3,  from:"البقرة (٢:٢٥٣)", to:"آل عمران (٣:٩٢)"},
+ {n:4,  from:"آل عمران (٣:٩٣)",to:"النساء (٤:٢٣)"},
+ {n:5,  from:"النساء (٤:٢٤)",  to:"النساء (٤:١٤٧)"},
+ {n:6,  from:"النساء (٤:١٤٨)", to:"المائدة (٥:٨١)"},
+ {n:7,  from:"المائدة (٥:٨٢)", to:"الأنعام (٦:١١٠)"},
+ {n:8,  from:"الأنعام (٦:١١١)",to:"الأعراف (٧:٨٧)"},
+ {n:9,  from:"الأعراف (٧:٨٨)", to:"الأنفال (٨:٤٠)"},
+ {n:10, from:"الأنفال (٨:٤١)", to:"التوبة (٩:٩٢)"},
+ {n:11, from:"التوبة (٩:٩٣)",  to:"هود (١١:٥)"},
+ {n:12, from:"هود (١١:٦)",     to:"يوسف (١٢:٥٢)"},
+ {n:13, from:"يوسف (١٢:٥٣)",   to:"إبراهيم (١٤)"},
+ {n:14, from:"الحجر (١٥)",     to:"النحل (١٦)"},
+ {n:15, from:"الإسراء (١٧)",   to:"الكهف (١٨:٧٤)"},
+ {n:16, from:"الكهف (١٨:٧٥)",  to:"طه (٢٠)"},
+ {n:17, from:"الأنبياء (٢١)",  to:"الحج (٢٢)"},
+ {n:18, from:"المؤمنون (٢٣)",  to:"الفرقان (٢٥:٢٠)"},
+ {n:19, from:"الفرقان (٢٥:٢١)",to:"النمل (٢٧:٥٥)"},
+ {n:20, from:"النمل (٢٧:٥٦)",  to:"العنكبوت (٢٩:٤٥)"},
+ {n:21, from:"العنكبوت (٢٩:٤٦)",to:"الأحزاب (٣٣:٣٠)"},
+ {n:22, from:"الأحزاب (٣٣:٣١)",to:"يس (٣٦:٢٧)"},
+ {n:23, from:"يس (٣٦:٢٨)",     to:"الزمر (٣٩:٣١)"},
+ {n:24, from:"الزمر (٣٩:٣٢)",  to:"فصلت (٤١:٤٦)"},
+ {n:25, from:"فصلت (٤١:٤٧)",   to:"الجاثية (٤٥)"},
+ {n:26, from:"الأحقاف (٤٦)",   to:"الذاريات (٥١:٣٠)"},
+ {n:27, from:"الذاريات (٥١:٣١)",to:"الحديد (٥٧)"},
+ {n:28, from:"المجادلة (٥٨)",  to:"التحريم (٦٦)"},
+ {n:29, from:"الملك (٦٧)",     to:"المرسلات (٧٧)"},
+ {n:30, from:"النبأ (٧٨)",     to:"الناس (١١٤)"},
+];
+
+const NEW_DAYS = 20;   // حفظ جديد
+const CONS_DAYS = 3;   // تثبيت الجزء
+const REVIEW_DAYS = 7; // تثبيت ومراجعة شاملة بعد كل ٥ أجزاء
+
+const stageThemes = ["s1","s2","s3","s4","s5","s6"];
+const stages = [];
+for(let s=0; s<6; s++){
+  stages.push({
+    id: "s"+(s+1),
+    theme: stageThemes[s],
+    title: "المرحلة " + arNum(s+1) + " — الأجزاء " + arNum(s*5+1) + " إلى " + arNum(s*5+5),
+    juz: juzList.slice(s*5, s*5+5)
+  });
+}
+
+const finalBlocks = [
+  {id:"fb1", label:"مراجعة الأجزاء ١ إلى ٨"},
+  {id:"fb2", label:"مراجعة الأجزاء ٩ إلى ١٦"},
+  {id:"fb3", label:"مراجعة الأجزاء ١٧ إلى ٢٣"},
+  {id:"fb4", label:"مراجعة الأجزاء ٢٤ إلى ٣٠ + ختمة كاملة متصلة"},
+];
+
+function arNum(n){
+  const d=["٠","١","٢","٣","٤","٥","٦","٧","٨","٩"];
+  return String(n).split("").map(c=>d[c]||c).join("");
+}
+
+/* ============ STATE ============ */
+const STORAGE_KEY = "hifz_quran_progress_v1";
+let state = {};
+try{ state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }catch(e){ state = {}; }
+
+function saveState(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+function isDone(key){ return !!state[key]; }
+function toggle(key, el){
+  state[key] = !state[key];
+  el.classList.toggle("done", state[key]);
+  saveState();
+  updateProgress();
+}
+
+/* ============ RENDER ============ */
+const container = document.getElementById("stagesContainer");
+
+function makeCheckRow(prefix, count, doneCallback){
+  const wrap = document.createElement("div");
+  wrap.className = "checks";
+  for(let i=1;i<=count;i++){
+    const key = prefix + "-" + i;
+    const box = document.createElement("div");
+    box.className = "chk" + (isDone(key) ? " done" : "");
+    box.textContent = arNum(i);
+    box.addEventListener("click", ()=> { toggle(key, box); if(doneCallback) doneCallback(); });
+    wrap.appendChild(box);
+  }
+  return wrap;
+}
+
+stages.forEach(stage=>{
+  const el = document.createElement("div");
+  el.className = "stage";
+  el.id = stage.id;
+
+  const head = document.createElement("div");
+  head.className = "stage-head";
+  head.style.background = `var(--${stage.theme})`;
+  head.innerHTML = `
+    <div>
+      <div class="title">${stage.title}</div>
+      <div class="sub" id="${stage.id}-sub"></div>
+      <div class="stage-mini-progress"><div class="stage-mini-fill" id="${stage.id}-mini" style="width:0%"></div></div>
+    </div>
+    <div class="chev">▾</div>
+  `;
+  head.addEventListener("click", ()=> el.classList.toggle("open"));
+  el.appendChild(head);
+
+  const body = document.createElement("div");
+  body.className = "stage-body";
+
+  stage.juz.forEach(j=>{
+    const card = document.createElement("div");
+    card.className = "juz-card";
+    card.innerHTML = `
+      <div class="juz-title">الجزء ${arNum(j.n)}</div>
+      <div class="juz-range">من ${j.from} — إلى ${j.to}</div>
+      <div class="group-label">حفظ جديد (صفحة واحدة/يوم)</div>
+    `;
+    card.appendChild(makeCheckRow("j"+j.n+"-new", NEW_DAYS));
+    const consLabel = document.createElement("div");
+    consLabel.className = "group-label";
+    consLabel.textContent = "تثبيت الجزء (تسميع كامل/يوم)";
+    card.appendChild(consLabel);
+    card.appendChild(makeCheckRow("j"+j.n+"-cons", CONS_DAYS));
+
+    const notesLabel = document.createElement("div");
+    notesLabel.className = "notes-label";
+    notesLabel.textContent = "ملاحظات";
+    card.appendChild(notesLabel);
+
+    const notesKey = "j"+j.n+"-notes";
+    const notesBox = document.createElement("textarea");
+    notesBox.className = "notes-box";
+    notesBox.placeholder = "مواضع تشابه، أخطاء متكررة، آيات تحتاج تركيزًا أكثر...";
+    notesBox.value = state[notesKey] || "";
+    let notesTimer;
+    notesBox.addEventListener("input", ()=>{
+      clearTimeout(notesTimer);
+      notesTimer = setTimeout(()=>{
+        state[notesKey] = notesBox.value;
+        saveState();
+      }, 400);
+    });
+    card.appendChild(notesBox);
+
+    body.appendChild(card);
+  });
+
+  const reviewWrap = document.createElement("div");
+  reviewWrap.className = "review-row";
+  reviewWrap.innerHTML = `<div class="group-label">تثبيت ومراجعة شاملة للأجزاء ${arNum(stage.juz[0].n)}-${arNum(stage.juz[4].n)}</div>`;
+  reviewWrap.appendChild(makeCheckRow(stage.id+"-review", REVIEW_DAYS));
+  body.appendChild(reviewWrap);
+
+  el.appendChild(body);
+  container.appendChild(el);
+});
+
+// Final stage
+const finalEl = document.createElement("div");
+finalEl.className = "stage";
+finalEl.id = "sf";
+const finalHead = document.createElement("div");
+finalHead.className = "stage-head";
+finalHead.style.background = "var(--sf)";
+finalHead.innerHTML = `
+  <div>
+    <div class="title">المرحلة الختامية — المراجعة الشاملة للقرآن كاملًا</div>
+    <div class="sub" id="sf-sub"></div>
+    <div class="stage-mini-progress"><div class="stage-mini-fill" id="sf-mini" style="width:0%"></div></div>
+  </div>
+  <div class="chev">▾</div>
+`;
+finalHead.addEventListener("click", ()=> finalEl.classList.toggle("open"));
+finalEl.appendChild(finalHead);
+
+const finalBody = document.createElement("div");
+finalBody.className = "stage-body";
+finalBlocks.forEach(fb=>{
+  const card = document.createElement("div");
+  card.className = "final-block";
+  card.innerHTML = `<div class="juz-title">${fb.label}</div>`;
+  card.appendChild(makeCheckRow(fb.id, 14));
+  finalBody.appendChild(card);
+});
+finalEl.appendChild(finalBody);
+container.appendChild(finalEl);
+
+/* ============ PROGRESS ============ */
+const TOTAL_DAYS = 6*(5*(NEW_DAYS+CONS_DAYS)+REVIEW_DAYS) + finalBlocks.length*14; // 788
+
+function countStageDone(stage){
+  let done=0, total=0;
+  stage.juz.forEach(j=>{
+    for(let i=1;i<=NEW_DAYS;i++){ total++; if(isDone("j"+j.n+"-new-"+i)) done++; }
+    for(let i=1;i<=CONS_DAYS;i++){ total++; if(isDone("j"+j.n+"-cons-"+i)) done++; }
+  });
+  for(let i=1;i<=REVIEW_DAYS;i++){ total++; if(isDone(stage.id+"-review-"+i)) done++; }
+  return {done, total};
+}
+
+function countFinalDone(){
+  let done=0, total=0;
+  finalBlocks.forEach(fb=>{
+    for(let i=1;i<=14;i++){ total++; if(isDone(fb.id+"-"+i)) done++; }
+  });
+  return {done, total};
+}
+
+function updateProgress(){
+  let grandDone = 0;
+  stages.forEach(stage=>{
+    const {done,total} = countStageDone(stage);
+    document.getElementById(stage.id+"-sub").textContent = `${arNum(done)} / ${arNum(total)} يومًا`;
+    document.getElementById(stage.id+"-mini").style.width = (total? (done/total*100):0) + "%";
+    grandDone += done;
+  });
+  const {done: fDone, total: fTotal} = countFinalDone();
+  document.getElementById("sf-sub").textContent = `${arNum(fDone)} / ${arNum(fTotal)} يومًا`;
+  document.getElementById("sf-mini").style.width = (fTotal? (fDone/fTotal*100):0) + "%";
+  grandDone += fDone;
+
+  const pct = Math.round((grandDone/TOTAL_DAYS)*100);
+  document.getElementById("overallFill").style.width = pct + "%";
+  document.getElementById("overallLabel").textContent = `${arNum(grandDone)} / ${arNum(TOTAL_DAYS)} يومًا (${arNum(pct)}٪)`;
+}
+updateProgress();
+
+// open first stage by default
+document.getElementById("s1").classList.add("open");
+
+document.getElementById("resetBtn").addEventListener("click", ()=>{
+  if(confirm("هل أنت متأكد من إعادة تعيين كل التقدّم؟ لا يمكن التراجع عن هذا.")){
+    state = {};
+    saveState();
+    location.reload();
+  }
+});
+
+/* ============ DAILY REMINDER ============ */
+const REMINDER_KEY = "hifz_reminder_settings_v1";
+let reminderSettings = { enabled:false, time:"20:00", lastFired:null };
+try{
+  const saved = JSON.parse(localStorage.getItem(REMINDER_KEY));
+  if(saved) reminderSettings = saved;
+}catch(e){}
+
+const timeInput = document.getElementById("reminderTime");
+const toggleBtn = document.getElementById("reminderToggleBtn");
+const statusEl = document.getElementById("reminderStatus");
+
+timeInput.value = reminderSettings.time;
+
+function saveReminderSettings(){
+  localStorage.setItem(REMINDER_KEY, JSON.stringify(reminderSettings));
+}
+
+function renderReminderUI(){
+  if(reminderSettings.enabled){
+    toggleBtn.textContent = "إيقاف التذكير";
+    toggleBtn.classList.remove("off");
+    statusEl.textContent = `مفعّل — سيصلك تذكير يوميًا الساعة ${reminderSettings.time} (طالما التطبيق مفتوح أو يعمل في الخلفية).`;
+  } else {
+    toggleBtn.textContent = "تفعيل التذكير";
+    toggleBtn.classList.add("off");
+    statusEl.textContent = "التذكير غير مفعّل حاليًا.";
+  }
+}
+renderReminderUI();
+
+timeInput.addEventListener("change", ()=>{
+  reminderSettings.time = timeInput.value;
+  saveReminderSettings();
+});
+
+toggleBtn.addEventListener("click", async ()=>{
+  if(!reminderSettings.enabled){
+    if(!("Notification" in window)){
+      alert("هذا المتصفح لا يدعم الإشعارات.");
+      return;
+    }
+    const perm = await Notification.requestPermission();
+    if(perm !== "granted"){
+      alert("لن تصلك تذكيرات لأن الإذن لم يُمنح.");
+      return;
+    }
+    reminderSettings.enabled = true;
+  } else {
+    reminderSettings.enabled = false;
+  }
+  saveReminderSettings();
+  renderReminderUI();
+});
+
+function fireReminderIfDue(){
+  if(!reminderSettings.enabled) return;
+  const now = new Date();
+  const hh = String(now.getHours()).padStart(2,"0");
+  const mm = String(now.getMinutes()).padStart(2,"0");
+  const nowStr = `${hh}:${mm}`;
+  const todayStr = now.toDateString();
+
+  if(nowStr === reminderSettings.time && reminderSettings.lastFired !== todayStr){
+    reminderSettings.lastFired = todayStr;
+    saveReminderSettings();
+    const body = "حان وقت ورد اليوم من خطة حفظ القرآن الكريم 📖";
+    if('serviceWorker' in navigator && navigator.serviceWorker.ready){
+      navigator.serviceWorker.ready.then(reg=>{
+        reg.showNotification("تذكير الحفظ اليومي", {
+          body, icon:"icons/icon-192.png", badge:"icons/icon-192.png", tag:"hifz-daily"
+        });
+      });
+    } else if(Notification.permission === "granted"){
+      new Notification("تذكير الحفظ اليومي", { body, icon:"icons/icon-192.png" });
+    }
+  }
+}
+setInterval(fireReminderIfDue, 30000);
+fireReminderIfDue();
+
+/* ============ PWA REGISTER ============ */
+if('serviceWorker' in navigator){
+  window.addEventListener('load', ()=>{
+    navigator.serviceWorker.register('service-worker.js').catch(()=>{});
+  });
+}
+</script>
+</body>
+</html>
