@@ -6,8 +6,8 @@
 <title>خطة حفظ القرآن الكريم</title>
 <meta name="theme-color" content="#0d5c46" />
 <link rel="manifest" href="manifest.json" />
-<link rel="icon" href="icons/icon-192.png" />
-<link rel="apple-touch-icon" href="icons/icon-192.png" />
+<link rel="icon" href="icon-192.png" />
+<link rel="apple-touch-icon" href="icon-192.png" />
 <style>
   :root{
     --bg:#f5f0e0;
@@ -150,7 +150,7 @@
 <body>
 
 <header>
-  <h1>خطة لحفظ القرآن الكريم كاملًا</h1>
+  <h1>خطة حفظ القرآن الكريم كاملًا</h1>
   <p>٣٠ جزءًا · ٧٨٨ يومًا · ٦ مراحل رئيسة + مرحلة ختامية</p>
   <div class="progress-wrap">
     <div class="progress-bar-bg"><div class="progress-bar-fill" id="overallFill"></div></div>
@@ -160,7 +160,7 @@
 
 <main>
   <div class="install-hint">
- 📌 اضغط على المربع بعد انتهاء الحفظ أو التثبيت.
+    📌 تثبيت السنتين المذكورتين إلمام زُفر: «لولا السنتان لهلك زُفر». اضغط على كل مربع بعد إتمام يوم الحفظ أو المراجعة، ويُحفظ تقدّمك تلقائيًا على هذا الجهاز.
   </div>
   <div class="reminder-card">
     <h3>⏰ تذكير يومي بالورد</h3>
@@ -498,11 +498,11 @@ function fireReminderIfDue(){
     if('serviceWorker' in navigator && navigator.serviceWorker.ready){
       navigator.serviceWorker.ready.then(reg=>{
         reg.showNotification("تذكير الحفظ اليومي", {
-          body, icon:"icons/icon-192.png", badge:"icons/icon-192.png", tag:"hifz-daily"
+          body, icon:"icon-192.png", badge:"icon-192.png", tag:"hifz-daily"
         });
       });
     } else if(Notification.permission === "granted"){
-      new Notification("تذكير الحفظ اليومي", { body, icon:"icons/icon-192.png" });
+      new Notification("تذكير الحفظ اليومي", { body, icon:"icon-192.png" });
     }
   }
 }
