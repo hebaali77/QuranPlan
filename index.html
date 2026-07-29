@@ -529,6 +529,27 @@ document.querySelectorAll(".modal-overlay").forEach(ov=>{
 });
 
 document.getElementById("shareAppBtn").addEventListener("click", async ()=>{
+  const APK_PATH = "./app.apk";
+  const APK_FILENAME = "خطة-لحفظ-القرآن.apk";
+
+  // Try to share the actual APK file (opens native "Send" sheet with the real app file)
+  try {
+    const res = await fetch(APK_PATH, { cache: "no-store" });
+    if(res.ok){
+      const blob = await res.blob();
+      const file = new File([blob], APK_FILENAME, { type: "application/vnd.android.package-archive" });
+      if(navigator.canShare && navigator.canShare({ files: [file] })){
+        await navigator.share({
+          files: [file],
+          title: "خطّة لحفظ القرآن",
+          text: "طبّق خطة عملية لحفظ القرآن الكريم كاملًا 📖"
+        });
+        return;
+      }
+    }
+  } catch(e){ /* fall through to link sharing below */ }
+
+  // Fallback: share the app's link instead (older browsers, or APK file not found)
   const shareData = {
     title: "خطّة لحفظ القرآن",
     text: "طبّق خطة عملية لحفظ القرآن الكريم كاملًا مع متابعة يومية للحفظ والمراجعة 📖",
@@ -558,40 +579,49 @@ function showCelebration(msg){
   celebOverlay.classList.add("show");
 }
 
-function checkCelebrations(){
-  let anyNewlyComplete = false;
+function isJuzComplete(n){
+  for(let i=1;i<=NEW_DAYS;i++){ if(!isDone("j"+n+"-new-"+i)) return false; }
+  for(let i=1;i<=CONS_DAYS;i++){ if(!isDone("j"+n+"-cons-"+i)) return false; }
+  return true;
+}
 
+function checkCelebrations(){
+  let msgToShow = null;
+
+  // Priority 1: entire plan complete
+  let grandDone = 0;
+  stages.forEach(stage=> grandDone += countStageDone(stage).done);
+  const {done: fDone, total: fTotal} = countFinalDone();
+  grandDone += fDone;
+  if(grandDone===TOTAL_DAYS && !state["celeb-all"]){
+    state["celeb-all"] = true;
+    msgToShow = "مبارك لك حفظ كتاب الله ونفع الله بك🤲🏻✨";
+  }
+
+  // Priority 2: a main stage or the final stage complete
   stages.forEach(stage=>{
     const {done,total} = countStageDone(stage);
     const flagKey = "celeb-"+stage.id;
     if(total>0 && done===total && !state[flagKey]){
       state[flagKey] = true;
-      if(!anyNewlyComplete){
-        showCelebration("ما شاء الله قد أتممت المرحلة✨\nثبّتك الله 🤲🏻");
-        anyNewlyComplete = true;
-      }
+      if(!msgToShow) msgToShow = "ما شاء الله قد أتممت المرحلة✨\nثبّتك الله 🤲🏻";
+    }
+  });
+  if(fTotal>0 && fDone===fTotal && !state["celeb-sf"]){
+    state["celeb-sf"] = true;
+    if(!msgToShow) msgToShow = "ما شاء الله قد أتممت المرحلة✨\nثبّتك الله 🤲🏻";
+  }
+
+  // Priority 3: a single juz fully memorized + consolidated
+  juzList.forEach(j=>{
+    const flagKey = "celeb-juz-"+j.n;
+    if(isJuzComplete(j.n) && !state[flagKey]){
+      state[flagKey] = true;
+      if(!msgToShow) msgToShow = "ما شاء الله لقد أتممت حفظ جزء✨\nثبّتك الله وبارك في همّتك🤲🏻";
     }
   });
 
-  const {done: fDone, total: fTotal} = countFinalDone();
-  if(fTotal>0 && fDone===fTotal && !state["celeb-sf"]){
-    state["celeb-sf"] = true;
-    if(!anyNewlyComplete){
-      showCelebration("ما شاء الله قد أتممت المرحلة✨\nثبّتك الله 🤲🏻");
-      anyNewlyComplete = true;
-    }
-  }
-
-  let grandDone = 0;
-  stages.forEach(stage=> grandDone += countStageDone(stage).done);
-  grandDone += fDone;
-  if(grandDone===TOTAL_DAYS && !state["celeb-all"]){
-    state["celeb-all"] = true;
-    showCelebration("مبارك لك حفظ كتاب الله ونفع الله بك🤲🏻✨");
-    anyNewlyComplete = true;
-  }
-
-  if(anyNewlyComplete) saveState();
+  if(msgToShow){ showCelebration(msgToShow); saveState(); }
 }
 
 // Silently mark any already-complete groups as celebrated on first load
@@ -609,8 +639,13 @@ function checkCelebrations(){
   stages.forEach(stage=> grandDone += countStageDone(stage).done);
   grandDone += fDone;
   if(grandDone===TOTAL_DAYS && !state["celeb-all"]){ state["celeb-all"]=true; changed=true; }
+  juzList.forEach(j=>{
+    const flagKey = "celeb-juz-"+j.n;
+    if(isJuzComplete(j.n) && !state[flagKey]){ state[flagKey]=true; changed=true; }
+  });
   if(changed) saveState();
 })();
+
 
 // open first stage by default
 document.getElementById("s1").classList.add("open");
