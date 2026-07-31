@@ -516,6 +516,13 @@ const FEEDBACK_WHATSAPP = "963981374689";
 document.getElementById("feedbackBtn").href =
   "https://wa.me/" + FEEDBACK_WHATSAPP + "?text=" + encodeURIComponent("ملاحظاتي على تطبيق خطّة لحفظ القرآن: ");
 
+const APK_FILENAME = "خطة-لحفظ-القرآن.apk";
+let cachedApkFile = null;
+fetch("./app.apk", { cache: "no-store" })
+  .then(res => { if(res.ok) return res.blob(); throw new Error("apk not found"); })
+  .then(blob => { cachedApkFile = new File([blob], APK_FILENAME, { type: "application/vnd.android.package-archive" }); })
+  .catch(()=>{ /* app.apk not uploaded yet — link-sharing fallback will be used */ });
+
 function openModal(id){ document.getElementById(id).classList.add("show"); }
 function closeModal(id){ document.getElementById(id).classList.remove("show"); }
 
@@ -528,42 +535,31 @@ document.querySelectorAll(".modal-overlay").forEach(ov=>{
   ov.addEventListener("click", (e)=>{ if(e.target === ov) ov.classList.remove("show"); });
 });
 
-document.getElementById("shareAppBtn").addEventListener("click", async ()=>{
-  const APK_PATH = "./app.apk";
-  const APK_FILENAME = "خطة-لحفظ-القرآن.apk";
+// IMPORTANT: no "await" happens before navigator.share() below — calling it after an
+// async gap can silently lose the browser's required user-gesture and do nothing.
+document.getElementById("shareAppBtn").addEventListener("click", ()=>{
+  if(cachedApkFile && navigator.canShare && navigator.canShare({ files: [cachedApkFile] })){
+    navigator.share({
+      files: [cachedApkFile],
+      title: "خطّة لحفظ القرآن",
+      text: "طبّق خطة عملية لحفظ القرآن الكريم كاملًا 📖"
+    }).catch(()=>{ /* user cancelled */ });
+    return;
+  }
 
-  // Try to share the actual APK file (opens native "Send" sheet with the real app file)
-  try {
-    const res = await fetch(APK_PATH, { cache: "no-store" });
-    if(res.ok){
-      const blob = await res.blob();
-      const file = new File([blob], APK_FILENAME, { type: "application/vnd.android.package-archive" });
-      if(navigator.canShare && navigator.canShare({ files: [file] })){
-        await navigator.share({
-          files: [file],
-          title: "خطّة لحفظ القرآن",
-          text: "طبّق خطة عملية لحفظ القرآن الكريم كاملًا 📖"
-        });
-        return;
-      }
-    }
-  } catch(e){ /* fall through to link sharing below */ }
-
-  // Fallback: share the app's link instead (older browsers, or APK file not found)
   const shareData = {
     title: "خطّة لحفظ القرآن",
     text: "طبّق خطة عملية لحفظ القرآن الكريم كاملًا مع متابعة يومية للحفظ والمراجعة 📖",
     url: APP_URL
   };
   if(navigator.share){
-    try { await navigator.share(shareData); } catch(e){ /* user cancelled, ignore */ }
+    navigator.share(shareData).catch(()=>{ /* user cancelled */ });
+  } else if(navigator.clipboard){
+    navigator.clipboard.writeText(APP_URL)
+      .then(()=> alert("تم نسخ رابط التطبيق، شاركه مع من تحب 📤"))
+      .catch(()=> alert(APP_URL));
   } else {
-    try {
-      await navigator.clipboard.writeText(APP_URL);
-      alert("تم نسخ رابط التطبيق، شاركه مع من تحب 📤");
-    } catch(e){
-      alert(APP_URL);
-    }
+    alert(APP_URL);
   }
 });
 
