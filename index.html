@@ -201,27 +201,24 @@
   .about-text{
     font-size:12.5px; line-height:1.9; color:var(--ink); text-align:right; margin-bottom:16px;
   }
-  .plan-choose-heading{
-    font-size:14.5px; font-weight:bold; color:var(--ink); margin:4px 0 10px; text-align:center;
+  .plan-picker-box{
+    background:linear-gradient(135deg, var(--s1-l), var(--s3-l));
+    border:2px solid var(--gold); border-radius:16px;
+    padding:16px; margin-bottom:16px; text-align:center;
   }
-  .plan-mode-cards{
-    display:flex; flex-direction:column; gap:10px; margin-bottom:16px;
+  .plan-picker-title{
+    font-size:15px; font-weight:bold; color:var(--ink); margin-bottom:12px;
   }
-  .plan-mode-card{
-    border:2px solid var(--line); border-radius:14px; background:#fffdf7;
-    padding:14px 16px; cursor:pointer; text-align:right;
-    transition: border-color .2s ease, background .2s ease;
+  .plan-picker-buttons{
+    display:flex; gap:10px;
   }
-  .plan-mode-card.active{ border-color:var(--gold); background:var(--s1-l); }
-  .plan-mode-card .card-top{
-    display:flex; align-items:center; justify-content:space-between; margin-bottom:5px;
+  .plan-pick-btn{
+    flex:1; border:2px solid var(--line); border-radius:12px; background:#fffdf7;
+    padding:14px 8px; font-size:14px; font-weight:bold; color:var(--ink);
+    cursor:pointer; transition: border-color .2s ease, background .2s ease;
+    font-family: inherit;
   }
-  .plan-mode-card .card-title{ font-size:14.5px; font-weight:bold; }
-  .plan-mode-card .check-badge{
-    font-size:16px; color:var(--gold); opacity:0; transition:opacity .2s ease;
-  }
-  .plan-mode-card.active .check-badge{ opacity:1; }
-  .plan-mode-card .card-desc{ font-size:11.5px; color:var(--muted); line-height:1.7; }
+  .plan-pick-btn.active{ border-color:var(--gold); background:var(--card); box-shadow:0 0 0 2px var(--gold) inset; }
 </style>
 </head>
 <body>
@@ -290,21 +287,11 @@
 </header>
 
 <main>
-  <div class="plan-choose-heading">اختر خطتك لتبدأ بها حفظك</div>
-  <div class="plan-mode-cards">
-    <div class="plan-mode-card" id="modeBtnJuz">
-      <div class="card-top">
-        <span class="card-title">📖 بالأجزاء</span>
-        <span class="check-badge">✔</span>
-      </div>
-      <div class="card-desc">صفحة واحدة كل يوم، بالتساوي على كل الثلاثين جزءًا (٧٨٨ يومًا إجمالًا).</div>
-    </div>
-    <div class="plan-mode-card" id="modeBtnSurah">
-      <div class="card-top">
-        <span class="card-title">📚 بالسور</span>
-        <span class="check-badge">✔</span>
-      </div>
-      <div class="card-desc">حسب طول كل سورة: عدد أيام حفظها = عدد صفحاتها الفعلي، مع ٣ أيام تثبيت بعد كل جزء و٧ أيام مراجعة شاملة بعد كل ٥ أجزاء (١١٤ سورة موزّعة على ٦ مجموعات، ٨١١ يومًا إجمالًا).</div>
+  <div class="plan-picker-box">
+    <div class="plan-picker-title">اختر خطتك لتبدأ بها الحفظ:</div>
+    <div class="plan-picker-buttons">
+      <button class="plan-pick-btn" id="modeBtnSurah">📚 بالسور</button>
+      <button class="plan-pick-btn" id="modeBtnJuz">📖 بالأجزاء</button>
     </div>
   </div>
   <div id="stagesContainer"></div>
@@ -506,28 +493,70 @@ const surahGroups = [];
     });
   });
 }
+const surahByN = {};
+surahList.forEach(s=> surahByN[s.n] = s);
+function groupIdForSurah(n){
+  const idx = surahGroupBoundaries.findIndex(b => n <= b);
+  return "sg" + (idx + 1);
+}
+
+// From An-Naba (78) to An-Nas (114) is exactly Juz 30 in the real mus-haf.
+// From Al-Infitar (82) onward, several very short surahs share a single
+// physical page, so they're memorized together as one day each.
+const TAIL_GROUPS = [
+  {label:"الانفطار والمطففين", ns:[82,83]},
+  {label:"الانشقاق", ns:[84]},
+  {label:"البروج", ns:[85]},
+  {label:"الطارق والأعلى", ns:[86,87]},
+  {label:"الغاشية والفجر", ns:[88,89]},
+  {label:"البلد والشمس والليل", ns:[90,91,92]},
+  {label:"الضحى والشرح", ns:[93,94]},
+  {label:"التين والعلق", ns:[95,96]},
+  {label:"القدر والبينة", ns:[97,98]},
+  {label:"الزلزلة والعاديات والقارعة والتكاثر", ns:[99,100,101,102]},
+  {label:"العصر والهمزة والفيل", ns:[103,104,105]},
+  {label:"قريش والماعون والكوثر", ns:[106,107,108]},
+  {label:"الكافرون والنصر والمسد", ns:[109,110,111]},
+  {label:"الإخلاص والفلق والناس", ns:[112,113,114]},
+];
 
 // Build the ordered render plan for surah mode: surah cards interleaved with
-// a 3-day consolidation block after every 20 accumulated pages (a "juz"),
-// plus a 7-day review block after every 5th such consolidation.
-const surahRenderPlan = []; // flat list of {type:'surah'|'juzcons'|'review', groupId, ...}
+// a 3-day consolidation block after every 20 accumulated pages (a real "juz"),
+// plus a 7-day review block after every 5th such consolidation — exactly like
+// the juz plan. Juz 30 (An-Naba to An-Nas) is handled as a single block with
+// one consolidation at the very end, right after An-Nas.
+const surahRenderPlan = []; // flat list of {type:'surah'|'surahgroup'|'juzcons'|'review', groupId, ...}
 {
   let runningPages = 0;
   let juzCount = 0;
-  surahGroups.forEach(group=>{
-    group.surahs.forEach(s=>{
-      surahRenderPlan.push({type:"surah", groupId:group.id, data:s});
-      runningPages += s.pages;
-      while(runningPages >= NEW_DAYS){
-        runningPages -= NEW_DAYS;
-        juzCount++;
-        surahRenderPlan.push({type:"juzcons", groupId:group.id, index:juzCount});
-        if(juzCount % 5 === 0){
-          surahRenderPlan.push({type:"review", groupId:group.id, index:juzCount/5});
-        }
+  for(let n=1; n<=77; n++){
+    const s = surahByN[n];
+    const gid = groupIdForSurah(n);
+    surahRenderPlan.push({type:"surah", groupId:gid, data:s});
+    runningPages += s.pages;
+    while(runningPages >= NEW_DAYS){
+      runningPages -= NEW_DAYS;
+      juzCount++;
+      surahRenderPlan.push({type:"juzcons", groupId:gid, index:juzCount});
+      if(juzCount % 5 === 0){
+        surahRenderPlan.push({type:"review", groupId:gid, index:juzCount/5});
       }
-    });
+    }
+  }
+  // An-Naba to At-Takwir (78-81): still individual, part of Juz 30, no checkpoint yet
+  for(let n=78; n<=81; n++){
+    surahRenderPlan.push({type:"surah", groupId:groupIdForSurah(n), data:surahByN[n]});
+  }
+  // Al-Infitar to An-Nas (82-114): grouped memorization days
+  TAIL_GROUPS.forEach((g, idx)=>{
+    surahRenderPlan.push({type:"surahgroup", groupId:groupIdForSurah(114), label:g.label, ns:g.ns, key:"surtail"+idx});
   });
+  // Consolidation for Juz 30, right after finishing An-Nas — plus the 6th review
+  juzCount++; // = 30
+  surahRenderPlan.push({type:"juzcons", groupId:groupIdForSurah(114), index:juzCount});
+  if(juzCount % 5 === 0){
+    surahRenderPlan.push({type:"review", groupId:groupIdForSurah(114), index:juzCount/5});
+  }
 }
 function surahPlanItemsForGroup(groupId){
   return surahRenderPlan.filter(it => it.groupId === groupId);
@@ -686,6 +715,17 @@ function renderSurahMode(){
         card.appendChild(makeCheckRow("sur"+s.n+"-new", s.pages));
         card.appendChild(makeNotesBox("sur"+s.n+"-notes"));
         body.appendChild(card);
+      } else if(item.type === "surahgroup"){
+        const card = document.createElement("div");
+        card.className = "juz-card";
+        card.innerHTML = `
+          <div class="juz-title">سور ${item.label}</div>
+          <div class="juz-range">يوم حفظ واحد</div>
+          <div class="group-label">حفظ جديد</div>
+        `;
+        card.appendChild(makeCheckRow(item.key, 1));
+        card.appendChild(makeNotesBox(item.key+"-notes"));
+        body.appendChild(card);
       } else if(item.type === "juzcons"){
         const consWrap = document.createElement("div");
         consWrap.className = "review-row";
@@ -753,6 +793,7 @@ function renderActiveMode(){
 const TOTAL_DAYS_JUZ = 6*(5*(NEW_DAYS+CONS_DAYS)+REVIEW_DAYS) + finalBlocks.length*14; // 788
 const TOTAL_DAYS_SURAH = surahRenderPlan.reduce((sum,item)=>{
   if(item.type === "surah") return sum + item.data.pages;
+  if(item.type === "surahgroup") return sum + 1;
   if(item.type === "juzcons") return sum + CONS_DAYS;
   if(item.type === "review") return sum + REVIEW_DAYS;
   return sum;
@@ -774,6 +815,8 @@ function countSurahGroupDone(group){
     if(item.type === "surah"){
       const s = item.data;
       for(let i=1;i<=s.pages;i++){ total++; if(isDone("sur"+s.n+"-new-"+i)) done++; }
+    } else if(item.type === "surahgroup"){
+      total++; if(isDone(item.key+"-1")) done++;
     } else if(item.type === "juzcons"){
       for(let i=1;i<=CONS_DAYS;i++){ total++; if(isDone("surjuz"+item.index+"-cons-"+i)) done++; }
     } else if(item.type === "review"){
@@ -960,7 +1003,7 @@ function checkCelebrations(){
 
   // Priority 3: a single juz or surah fully memorized + consolidated
   if(planMode === "surah"){
-    surahList.forEach(s=>{
+    surahList.filter(s=> s.n <= 81).forEach(s=>{
       const flagKey = "celeb-sur-"+s.n;
       if(isSurahComplete(s) && !state[flagKey]){
         state[flagKey] = true;
@@ -1013,7 +1056,7 @@ function checkCelebrations(){
     const flagKey = "celeb-juz-"+j.n;
     if(isJuzComplete(j.n) && !state[flagKey]){ state[flagKey]=true; changed=true; }
   });
-  surahList.forEach(s=>{
+  surahList.filter(s=> s.n <= 81).forEach(s=>{
     const flagKey = "celeb-sur-"+s.n;
     if(isSurahComplete(s) && !state[flagKey]){ state[flagKey]=true; changed=true; }
   });
