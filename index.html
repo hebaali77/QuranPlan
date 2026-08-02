@@ -204,6 +204,21 @@
     display:block; margin:14px auto 0; background:none; border:1px solid var(--line);
     padding:8px 22px; border-radius:10px; font-size:12.5px; color:var(--muted); cursor:pointer;
   }
+  header .verse{
+    font-size:13.5px; color:var(--gold); margin:2px 0 10px; font-weight:bold; line-height:1.9;
+  }
+  .about-text{
+    font-size:12.5px; line-height:1.9; color:var(--ink); text-align:right; margin-bottom:16px;
+  }
+  .plan-mode-switch{
+    display:flex; gap:8px; background:#fffdf7; border:1px solid var(--line); border-radius:12px;
+    padding:5px; margin-bottom:14px;
+  }
+  .plan-mode-btn{
+    flex:1; text-align:center; padding:9px 6px; border-radius:9px; font-size:12.5px;
+    border:none; background:transparent; color:var(--muted); cursor:pointer;
+  }
+  .plan-mode-btn.active{ background:var(--s1); color:#fff; font-weight:bold; }
 </style>
 </head>
 <body>
@@ -218,7 +233,8 @@
 <div id="settingsOverlay" class="modal-overlay">
   <div class="modal-sheet">
     <div class="modal-title">⚙️ الإعدادات</div>
-    <div class="modal-row" id="shareAppBtn"><span class="emoji">📤</span> مشاركة التطبيق</div>
+    <div class="modal-row" id="shareAppBtn"><span class="emoji">📥</span> تحميل ملف التطبيق (لإرساله كملف APK)</div>
+    <div class="modal-row" id="copyLinkBtn"><span class="emoji">🔗</span> نسخ رابط الموقع</div>
     <a class="modal-row" id="feedbackBtn" href="#" target="_blank" rel="noopener"><span class="emoji">💬</span> ملاحظات واقتراحات</a>
     <button class="modal-close-btn" data-close="settingsOverlay">إغلاق</button>
   </div>
@@ -226,7 +242,15 @@
 
 <div id="aboutOverlay" class="modal-overlay">
   <div class="modal-sheet">
-    <div class="modal-title">ℹ️ تابعونا</div>
+    <div class="modal-title">ℹ️ عن التطبيق</div>
+    <p class="about-text">
+      «خطّة لحفظ القرآن» تطبيق مجاني بسيط يساعدك على حفظ القرآن الكريم كاملًا خلال قرابة سنتين،
+      عن طريق متابعة يومية منظّمة للحفظ الجديد وتثبيت المحفوظ ومراجعته دوريًا، مع تتبّع تلقائي
+      لتقدّمك يُحفظ على جهازك مباشرة بدون حاجة لإنترنت. يمكنك اختيار خطة الحفظ حسب الأجزاء
+      أو حسب السور، وتفعيل تذكير يومي بالورد، وتدوين ملاحظاتك الخاصة على كل جزء أو سورة.
+      نسأل الله أن ينفع به كل من يستخدمه، وأن يكون سببًا في حفظ كتابه الكريم.
+    </p>
+    <div class="modal-title" style="margin-top:0;">📣 تابعونا</div>
     <a class="modal-row" href="https://t.me/LytmaennaQalbi" target="_blank" rel="noopener"><span class="emoji"><svg viewBox="0 0 40 40" width="26" height="26"><circle cx="20" cy="20" r="20" fill="#29B6F6"/><path d="M9 20.4l19-7.6c1-.4 1.8.3 1.4 1.7l-3.3 15.6c-.3 1.2-1 1.5-2.1.9l-5.8-4.3-2.8 2.7c-.3.3-.6.5-1.1.5l.4-5.7 10.4-9.4c.4-.4-.1-.6-.7-.2L13.1 22l-5.5-1.7c-1.2-.4-1.2-1.2.4-1.9z" fill="#fff"/></svg></span> تيليجرام</a>
     <a class="modal-row" href="https://www.facebook.com/profile.php?id=61554194634321" target="_blank" rel="noopener"><span class="emoji"><svg viewBox="0 0 40 40" width="26" height="26"><circle cx="20" cy="20" r="20" fill="#1877F2"/><path d="M22.5 32V21.6h3.5l.5-4h-4v-2.6c0-1.2.3-1.9 2-1.9h2.1V9.5c-.4-.1-1.6-.2-3-.2-3 0-5 1.8-5 5.1V17.6H15v4h3.6V32h3.9z" fill="#fff"/></svg></span> فيسبوك</a>
     <a class="modal-row" href="https://www.instagram.com/lytmaenna_qalbi?igsh=MTg5b3JkYjQzamhhcw==" target="_blank" rel="noopener"><span class="emoji"><svg viewBox="0 0 40 40" width="26" height="26"><defs><linearGradient id="igGrad" x1="0" y1="1" x2="1" y2="0"><stop offset="0%" stop-color="#FEDA75"/><stop offset="35%" stop-color="#D62976"/><stop offset="70%" stop-color="#962FBF"/><stop offset="100%" stop-color="#4F5BD5"/></linearGradient></defs><circle cx="20" cy="20" r="20" fill="url(#igGrad)"/><rect x="11" y="11" width="18" height="18" rx="5" fill="none" stroke="#fff" stroke-width="1.8"/><circle cx="20" cy="20" r="4.6" fill="none" stroke="#fff" stroke-width="1.8"/><circle cx="25.2" cy="14.8" r="1.2" fill="#fff"/></svg></span> إنستغرام</a>
@@ -242,7 +266,8 @@
     <button class="icon-btn" id="settingsBtn" aria-label="الإعدادات">⚙️</button>
   </div>
   <h1>خطة لحفظ القرآن الكريم كاملًا</h1>
-  <p>٣٠ جزءًا · ٧٨٨ يومًا · ٦ مراحل رئيسة + مرحلة ختامية</p>
+  <p class="verse">﴿إِنَّا نَحْنُ نَزَّلْنَا الذِّكْرَ وَإِنَّا لَهُ لَحَافِظُونَ﴾</p>
+  <p id="planSubtitle">٣٠ جزءًا · ٧٨٨ يومًا · ٦ مراحل رئيسة + مرحلة ختامية</p>
   <div class="progress-wrap">
     <div class="progress-bar-bg"><div class="progress-bar-fill" id="overallFill"></div></div>
     <div class="progress-label" id="overallLabel">٠ / ٧٨٨ يومًا (٠٪)</div>
@@ -252,6 +277,10 @@
 <main>
   <div class="install-hint">
     📌 اضغط على كل مربع بعد إتمام يوم الحفظ أو المراجعة، ويُحفظ تقدّمك تلقائيًا على هذا الجهاز.
+  </div>
+  <div class="plan-mode-switch">
+    <button class="plan-mode-btn" id="modeBtnJuz">بالأجزاء (صفحة/يوم)</button>
+    <button class="plan-mode-btn" id="modeBtnSurah">بالسور (حسب صفحات كل سورة)</button>
   </div>
   <div class="reminder-card">
     <h3>⏰ تذكير يومي بالورد</h3>
@@ -308,7 +337,124 @@ const juzList = [
  {n:30, from:"النبأ (٧٨)",     to:"الناس (١١٤)"},
 ];
 
-const NEW_DAYS = 20;   // حفظ جديد
+const surahList = [
+  {n:1, name:"الفاتحة", pages:1, cons:1},
+  {n:2, name:"البقرة", pages:48, cons:7},
+  {n:3, name:"آل عمران", pages:27, cons:4},
+  {n:4, name:"النساء", pages:29, cons:4},
+  {n:5, name:"المائدة", pages:22, cons:3},
+  {n:6, name:"الأنعام", pages:23, cons:3},
+  {n:7, name:"الأعراف", pages:26, cons:4},
+  {n:8, name:"الأنفال", pages:10, cons:2},
+  {n:9, name:"التوبة", pages:21, cons:3},
+  {n:10, name:"يونس", pages:13, cons:2},
+  {n:11, name:"هود", pages:14, cons:2},
+  {n:12, name:"يوسف", pages:14, cons:2},
+  {n:13, name:"الرعد", pages:6, cons:1},
+  {n:14, name:"إبراهيم", pages:7, cons:1},
+  {n:15, name:"الحجر", pages:5, cons:1},
+  {n:16, name:"النحل", pages:15, cons:2},
+  {n:17, name:"الإسراء", pages:11, cons:2},
+  {n:18, name:"الكهف", pages:12, cons:2},
+  {n:19, name:"مريم", pages:7, cons:1},
+  {n:20, name:"طه", pages:10, cons:2},
+  {n:21, name:"الأنبياء", pages:10, cons:2},
+  {n:22, name:"الحج", pages:10, cons:2},
+  {n:23, name:"المؤمنون", pages:8, cons:1},
+  {n:24, name:"النور", pages:9, cons:1},
+  {n:25, name:"الفرقان", pages:8, cons:1},
+  {n:26, name:"الشعراء", pages:10, cons:2},
+  {n:27, name:"النمل", pages:8, cons:1},
+  {n:28, name:"القصص", pages:11, cons:2},
+  {n:29, name:"العنكبوت", pages:8, cons:1},
+  {n:30, name:"الروم", pages:7, cons:1},
+  {n:31, name:"لقمان", pages:4, cons:1},
+  {n:32, name:"السجدة", pages:3, cons:1},
+  {n:33, name:"الأحزاب", pages:10, cons:2},
+  {n:34, name:"سبأ", pages:6, cons:1},
+  {n:35, name:"فاطر", pages:6, cons:1},
+  {n:36, name:"يس", pages:6, cons:1},
+  {n:37, name:"الصافات", pages:7, cons:1},
+  {n:38, name:"ص", pages:5, cons:1},
+  {n:39, name:"الزمر", pages:9, cons:1},
+  {n:40, name:"غافر", pages:10, cons:2},
+  {n:41, name:"فصلت", pages:6, cons:1},
+  {n:42, name:"الشورى", pages:6, cons:1},
+  {n:43, name:"الزخرف", pages:7, cons:1},
+  {n:44, name:"الدخان", pages:3, cons:1},
+  {n:45, name:"الجاثية", pages:3, cons:1},
+  {n:46, name:"الأحقاف", pages:5, cons:1},
+  {n:47, name:"محمد", pages:4, cons:1},
+  {n:48, name:"الفتح", pages:4, cons:1},
+  {n:49, name:"الحجرات", pages:3, cons:1},
+  {n:50, name:"ق", pages:2, cons:1},
+  {n:51, name:"الذاريات", pages:3, cons:1},
+  {n:52, name:"الطور", pages:3, cons:1},
+  {n:53, name:"النجم", pages:2, cons:1},
+  {n:54, name:"القمر", pages:3, cons:1},
+  {n:55, name:"الرحمن", pages:3, cons:1},
+  {n:56, name:"الواقعة", pages:3, cons:1},
+  {n:57, name:"الحديد", pages:5, cons:1},
+  {n:58, name:"المجادلة", pages:3, cons:1},
+  {n:59, name:"الحشر", pages:4, cons:1},
+  {n:60, name:"الممتحنة", pages:2, cons:1},
+  {n:61, name:"الصف", pages:2, cons:1},
+  {n:62, name:"الجمعة", pages:1, cons:1},
+  {n:63, name:"المنافقون", pages:2, cons:1},
+  {n:64, name:"التغابن", pages:2, cons:1},
+  {n:65, name:"الطلاق", pages:2, cons:1},
+  {n:66, name:"التحريم", pages:2, cons:1},
+  {n:67, name:"الملك", pages:2, cons:1},
+  {n:68, name:"القلم", pages:2, cons:1},
+  {n:69, name:"الحاقة", pages:2, cons:1},
+  {n:70, name:"المعارج", pages:2, cons:1},
+  {n:71, name:"نوح", pages:2, cons:1},
+  {n:72, name:"الجن", pages:2, cons:1},
+  {n:73, name:"المزمل", pages:1, cons:1},
+  {n:74, name:"المدثر", pages:2, cons:1},
+  {n:75, name:"القيامة", pages:1, cons:1},
+  {n:76, name:"الإنسان", pages:2, cons:1},
+  {n:77, name:"المرسلات", pages:2, cons:1},
+  {n:78, name:"النبأ", pages:1, cons:1},
+  {n:79, name:"النازعات", pages:2, cons:1},
+  {n:80, name:"عبس", pages:1, cons:1},
+  {n:81, name:"التكوير", pages:1, cons:1},
+  {n:82, name:"الانفطار", pages:1, cons:1},
+  {n:83, name:"المطففين", pages:2, cons:1},
+  {n:84, name:"الانشقاق", pages:1, cons:1},
+  {n:85, name:"البروج", pages:1, cons:1},
+  {n:86, name:"الطارق", pages:1, cons:1},
+  {n:87, name:"الأعلى", pages:1, cons:1},
+  {n:88, name:"الغاشية", pages:1, cons:1},
+  {n:89, name:"الفجر", pages:1, cons:1},
+  {n:90, name:"البلد", pages:1, cons:1},
+  {n:91, name:"الشمس", pages:1, cons:1},
+  {n:92, name:"الليل", pages:1, cons:1},
+  {n:93, name:"الضحى", pages:1, cons:1},
+  {n:94, name:"الشرح", pages:1, cons:1},
+  {n:95, name:"التين", pages:1, cons:1},
+  {n:96, name:"العلق", pages:1, cons:1},
+  {n:97, name:"القدر", pages:1, cons:1},
+  {n:98, name:"البينة", pages:1, cons:1},
+  {n:99, name:"الزلزلة", pages:1, cons:1},
+  {n:100, name:"العاديات", pages:1, cons:1},
+  {n:101, name:"القارعة", pages:1, cons:1},
+  {n:102, name:"التكاثر", pages:1, cons:1},
+  {n:103, name:"العصر", pages:1, cons:1},
+  {n:104, name:"الهمزة", pages:1, cons:1},
+  {n:105, name:"الفيل", pages:1, cons:1},
+  {n:106, name:"قريش", pages:1, cons:1},
+  {n:107, name:"الماعون", pages:1, cons:1},
+  {n:108, name:"الكوثر", pages:1, cons:1},
+  {n:109, name:"الكافرون", pages:1, cons:1},
+  {n:110, name:"النصر", pages:1, cons:1},
+  {n:111, name:"المسد", pages:1, cons:1},
+  {n:112, name:"الاخلاص", pages:1, cons:1},
+  {n:113, name:"الفلق", pages:1, cons:1},
+  {n:114, name:"الناس", pages:1, cons:1},
+];
+// Balanced grouping of the 114 surahs into 6 roughly-equal stages (by total day count)
+const surahGroupBoundaries = [5, 11, 22, 36, 59, 114]; // last surah number in each group
 const CONS_DAYS = 3;   // تثبيت الجزء
 const REVIEW_DAYS = 7; // تثبيت ومراجعة شاملة بعد كل ٥ أجزاء
 
@@ -329,6 +475,23 @@ const finalBlocks = [
   {id:"fb3", label:"مراجعة الأجزاء ١٧ إلى ٢٣"},
   {id:"fb4", label:"مراجعة الأجزاء ٢٤ إلى ٣٠ + ختمة كاملة متصلة"},
 ];
+
+const surahGroups = [];
+{
+  let startIdx = 0;
+  surahGroupBoundaries.forEach((lastN, idx)=>{
+    const groupSurahs = surahList.filter(s => s.n > (idx===0?0:surahGroupBoundaries[idx-1]) && s.n <= lastN);
+    surahGroups.push({
+      id: "sg"+(idx+1),
+      theme: stageThemes[idx],
+      title: "المجموعة " + arNum(idx+1) + " — سورة " + groupSurahs[0].name + " إلى سورة " + groupSurahs[groupSurahs.length-1].name,
+      surahs: groupSurahs
+    });
+  });
+}
+
+const PLAN_MODE_KEY = "hifz_plan_mode";
+let planMode = localStorage.getItem(PLAN_MODE_KEY) || "juz";
 
 function arNum(n){
   const d=["٠","١","٢","٣","٤","٥","٦","٧","٨","٩"];
@@ -369,108 +532,174 @@ function makeCheckRow(prefix, count, doneCallback){
   return wrap;
 }
 
-stages.forEach(stage=>{
-  const el = document.createElement("div");
-  el.className = "stage";
-  el.id = stage.id;
+function makeNotesBox(notesKey){
+  const notesLabel = document.createElement("div");
+  notesLabel.className = "notes-label";
+  notesLabel.textContent = "ملاحظات";
 
-  const head = document.createElement("div");
-  head.className = "stage-head";
-  head.style.background = `var(--${stage.theme})`;
-  head.innerHTML = `
+  const notesBox = document.createElement("textarea");
+  notesBox.className = "notes-box";
+  notesBox.placeholder = "مواضع تشابه، أخطاء متكررة، آيات تحتاج تركيزًا أكثر...";
+  notesBox.value = state[notesKey] || "";
+  let notesTimer;
+  notesBox.addEventListener("input", ()=>{
+    clearTimeout(notesTimer);
+    notesTimer = setTimeout(()=>{
+      state[notesKey] = notesBox.value;
+      saveState();
+    }, 400);
+  });
+  const frag = document.createDocumentFragment();
+  frag.appendChild(notesLabel);
+  frag.appendChild(notesBox);
+  return frag;
+}
+
+function renderJuzMode(){
+  stages.forEach(stage=>{
+    const el = document.createElement("div");
+    el.className = "stage";
+    el.id = stage.id;
+
+    const head = document.createElement("div");
+    head.className = "stage-head";
+    head.style.background = `var(--${stage.theme})`;
+    head.innerHTML = `
+      <div>
+        <div class="title">${stage.title}</div>
+        <div class="sub" id="${stage.id}-sub"></div>
+        <div class="stage-mini-progress"><div class="stage-mini-fill" id="${stage.id}-mini" style="width:0%"></div></div>
+      </div>
+      <div class="chev">▾</div>
+    `;
+    head.addEventListener("click", ()=> el.classList.toggle("open"));
+    el.appendChild(head);
+
+    const body = document.createElement("div");
+    body.className = "stage-body";
+
+    stage.juz.forEach(j=>{
+      const card = document.createElement("div");
+      card.className = "juz-card";
+      card.innerHTML = `
+        <div class="juz-title">الجزء ${arNum(j.n)}</div>
+        <div class="juz-range">من ${j.from} — إلى ${j.to}</div>
+        <div class="group-label">حفظ جديد (صفحة واحدة/يوم)</div>
+      `;
+      card.appendChild(makeCheckRow("j"+j.n+"-new", NEW_DAYS));
+      const consLabel = document.createElement("div");
+      consLabel.className = "group-label";
+      consLabel.textContent = "تثبيت الجزء (تسميع كامل/يوم)";
+      card.appendChild(consLabel);
+      card.appendChild(makeCheckRow("j"+j.n+"-cons", CONS_DAYS));
+      card.appendChild(makeNotesBox("j"+j.n+"-notes"));
+      body.appendChild(card);
+    });
+
+    const reviewWrap = document.createElement("div");
+    reviewWrap.className = "review-row";
+    reviewWrap.innerHTML = `<div class="group-label">تثبيت ومراجعة شاملة للأجزاء ${arNum(stage.juz[0].n)}-${arNum(stage.juz[4].n)}</div>`;
+    reviewWrap.appendChild(makeCheckRow(stage.id+"-review", REVIEW_DAYS));
+    body.appendChild(reviewWrap);
+
+    el.appendChild(body);
+    container.appendChild(el);
+  });
+}
+
+function renderSurahMode(){
+  surahGroups.forEach(group=>{
+    const el = document.createElement("div");
+    el.className = "stage";
+    el.id = group.id;
+
+    const head = document.createElement("div");
+    head.className = "stage-head";
+    head.style.background = `var(--${group.theme})`;
+    head.innerHTML = `
+      <div>
+        <div class="title">${group.title}</div>
+        <div class="sub" id="${group.id}-sub"></div>
+        <div class="stage-mini-progress"><div class="stage-mini-fill" id="${group.id}-mini" style="width:0%"></div></div>
+      </div>
+      <div class="chev">▾</div>
+    `;
+    head.addEventListener("click", ()=> el.classList.toggle("open"));
+    el.appendChild(head);
+
+    const body = document.createElement("div");
+    body.className = "stage-body";
+
+    group.surahs.forEach(s=>{
+      const card = document.createElement("div");
+      card.className = "juz-card";
+      card.innerHTML = `
+        <div class="juz-title">سورة ${s.name}</div>
+        <div class="juz-range">${arNum(s.pages)} ${s.pages===1?"صفحة":"صفحات"}</div>
+        <div class="group-label">حفظ جديد (صفحة واحدة/يوم)</div>
+      `;
+      card.appendChild(makeCheckRow("sur"+s.n+"-new", s.pages));
+      const consLabel = document.createElement("div");
+      consLabel.className = "group-label";
+      consLabel.textContent = "تثبيت السورة (تسميع كامل/يوم)";
+      card.appendChild(consLabel);
+      card.appendChild(makeCheckRow("sur"+s.n+"-cons", s.cons));
+      card.appendChild(makeNotesBox("sur"+s.n+"-notes"));
+      body.appendChild(card);
+    });
+
+    el.appendChild(body);
+    container.appendChild(el);
+  });
+}
+
+function renderFinalStage(){
+  const finalEl = document.createElement("div");
+  finalEl.className = "stage";
+  finalEl.id = "sf";
+  const finalHead = document.createElement("div");
+  finalHead.className = "stage-head";
+  finalHead.style.background = "var(--sf)";
+  finalHead.innerHTML = `
     <div>
-      <div class="title">${stage.title}</div>
-      <div class="sub" id="${stage.id}-sub"></div>
-      <div class="stage-mini-progress"><div class="stage-mini-fill" id="${stage.id}-mini" style="width:0%"></div></div>
+      <div class="title">المرحلة الختامية — المراجعة الشاملة للقرآن كاملًا</div>
+      <div class="sub" id="sf-sub"></div>
+      <div class="stage-mini-progress"><div class="stage-mini-fill" id="sf-mini" style="width:0%"></div></div>
     </div>
     <div class="chev">▾</div>
   `;
-  head.addEventListener("click", ()=> el.classList.toggle("open"));
-  el.appendChild(head);
+  finalHead.addEventListener("click", ()=> finalEl.classList.toggle("open"));
+  finalEl.appendChild(finalHead);
 
-  const body = document.createElement("div");
-  body.className = "stage-body";
-
-  stage.juz.forEach(j=>{
+  const finalBody = document.createElement("div");
+  finalBody.className = "stage-body";
+  finalBlocks.forEach(fb=>{
     const card = document.createElement("div");
-    card.className = "juz-card";
-    card.innerHTML = `
-      <div class="juz-title">الجزء ${arNum(j.n)}</div>
-      <div class="juz-range">من ${j.from} — إلى ${j.to}</div>
-      <div class="group-label">حفظ جديد (صفحة واحدة/يوم)</div>
-    `;
-    card.appendChild(makeCheckRow("j"+j.n+"-new", NEW_DAYS));
-    const consLabel = document.createElement("div");
-    consLabel.className = "group-label";
-    consLabel.textContent = "تثبيت الجزء (تسميع كامل/يوم)";
-    card.appendChild(consLabel);
-    card.appendChild(makeCheckRow("j"+j.n+"-cons", CONS_DAYS));
-
-    const notesLabel = document.createElement("div");
-    notesLabel.className = "notes-label";
-    notesLabel.textContent = "ملاحظات";
-    card.appendChild(notesLabel);
-
-    const notesKey = "j"+j.n+"-notes";
-    const notesBox = document.createElement("textarea");
-    notesBox.className = "notes-box";
-    notesBox.placeholder = "مواضع تشابه، أخطاء متكررة، آيات تحتاج تركيزًا أكثر...";
-    notesBox.value = state[notesKey] || "";
-    let notesTimer;
-    notesBox.addEventListener("input", ()=>{
-      clearTimeout(notesTimer);
-      notesTimer = setTimeout(()=>{
-        state[notesKey] = notesBox.value;
-        saveState();
-      }, 400);
-    });
-    card.appendChild(notesBox);
-
-    body.appendChild(card);
+    card.className = "final-block";
+    card.innerHTML = `<div class="juz-title">${fb.label}</div>`;
+    card.appendChild(makeCheckRow(fb.id, 14));
+    finalBody.appendChild(card);
   });
+  finalEl.appendChild(finalBody);
+  container.appendChild(finalEl);
+}
 
-  const reviewWrap = document.createElement("div");
-  reviewWrap.className = "review-row";
-  reviewWrap.innerHTML = `<div class="group-label">تثبيت ومراجعة شاملة للأجزاء ${arNum(stage.juz[0].n)}-${arNum(stage.juz[4].n)}</div>`;
-  reviewWrap.appendChild(makeCheckRow(stage.id+"-review", REVIEW_DAYS));
-  body.appendChild(reviewWrap);
-
-  el.appendChild(body);
-  container.appendChild(el);
-});
-
-// Final stage
-const finalEl = document.createElement("div");
-finalEl.className = "stage";
-finalEl.id = "sf";
-const finalHead = document.createElement("div");
-finalHead.className = "stage-head";
-finalHead.style.background = "var(--sf)";
-finalHead.innerHTML = `
-  <div>
-    <div class="title">المرحلة الختامية — المراجعة الشاملة للقرآن كاملًا</div>
-    <div class="sub" id="sf-sub"></div>
-    <div class="stage-mini-progress"><div class="stage-mini-fill" id="sf-mini" style="width:0%"></div></div>
-  </div>
-  <div class="chev">▾</div>
-`;
-finalHead.addEventListener("click", ()=> finalEl.classList.toggle("open"));
-finalEl.appendChild(finalHead);
-
-const finalBody = document.createElement("div");
-finalBody.className = "stage-body";
-finalBlocks.forEach(fb=>{
-  const card = document.createElement("div");
-  card.className = "final-block";
-  card.innerHTML = `<div class="juz-title">${fb.label}</div>`;
-  card.appendChild(makeCheckRow(fb.id, 14));
-  finalBody.appendChild(card);
-});
-finalEl.appendChild(finalBody);
-container.appendChild(finalEl);
+function renderActiveMode(){
+  container.innerHTML = "";
+  if(planMode === "surah"){
+    renderSurahMode();
+  } else {
+    renderJuzMode();
+  }
+  renderFinalStage();
+  // open first stage by default
+  const first = container.querySelector(".stage");
+  if(first) first.classList.add("open");
+}
 
 /* ============ PROGRESS ============ */
-const TOTAL_DAYS = 6*(5*(NEW_DAYS+CONS_DAYS)+REVIEW_DAYS) + finalBlocks.length*14; // 788
+const TOTAL_DAYS_JUZ = 6*(5*(NEW_DAYS+CONS_DAYS)+REVIEW_DAYS) + finalBlocks.length*14; // 788
+const TOTAL_DAYS_SURAH = surahList.reduce((sum,s)=> sum + s.pages + s.cons, 0) + finalBlocks.length*14;
 
 function countStageDone(stage){
   let done=0, total=0;
@@ -479,6 +708,15 @@ function countStageDone(stage){
     for(let i=1;i<=CONS_DAYS;i++){ total++; if(isDone("j"+j.n+"-cons-"+i)) done++; }
   });
   for(let i=1;i<=REVIEW_DAYS;i++){ total++; if(isDone(stage.id+"-review-"+i)) done++; }
+  return {done, total};
+}
+
+function countSurahGroupDone(group){
+  let done=0, total=0;
+  group.surahs.forEach(s=>{
+    for(let i=1;i<=s.pages;i++){ total++; if(isDone("sur"+s.n+"-new-"+i)) done++; }
+    for(let i=1;i<=s.cons;i++){ total++; if(isDone("sur"+s.n+"-cons-"+i)) done++; }
+  });
   return {done, total};
 }
 
@@ -492,21 +730,57 @@ function countFinalDone(){
 
 function updateProgress(){
   let grandDone = 0;
-  stages.forEach(stage=>{
-    const {done,total} = countStageDone(stage);
-    document.getElementById(stage.id+"-sub").textContent = `${arNum(done)} / ${arNum(total)} يومًا`;
-    document.getElementById(stage.id+"-mini").style.width = (total? (done/total*100):0) + "%";
+  const groups = planMode === "surah" ? surahGroups : stages;
+  const counter = planMode === "surah" ? countSurahGroupDone : countStageDone;
+
+  groups.forEach(g=>{
+    const {done,total} = counter(g);
+    const subEl = document.getElementById(g.id+"-sub");
+    const miniEl = document.getElementById(g.id+"-mini");
+    if(subEl) subEl.textContent = `${arNum(done)} / ${arNum(total)} يومًا`;
+    if(miniEl) miniEl.style.width = (total? (done/total*100):0) + "%";
     grandDone += done;
   });
+
   const {done: fDone, total: fTotal} = countFinalDone();
-  document.getElementById("sf-sub").textContent = `${arNum(fDone)} / ${arNum(fTotal)} يومًا`;
-  document.getElementById("sf-mini").style.width = (fTotal? (fDone/fTotal*100):0) + "%";
+  const sfSub = document.getElementById("sf-sub");
+  const sfMini = document.getElementById("sf-mini");
+  if(sfSub) sfSub.textContent = `${arNum(fDone)} / ${arNum(fTotal)} يومًا`;
+  if(sfMini) sfMini.style.width = (fTotal? (fDone/fTotal*100):0) + "%";
   grandDone += fDone;
 
-  const pct = Math.round((grandDone/TOTAL_DAYS)*100);
+  const totalDays = planMode === "surah" ? TOTAL_DAYS_SURAH : TOTAL_DAYS_JUZ;
+  const pct = Math.round((grandDone/totalDays)*100);
   document.getElementById("overallFill").style.width = pct + "%";
-  document.getElementById("overallLabel").textContent = `${arNum(grandDone)} / ${arNum(TOTAL_DAYS)} يومًا (${arNum(pct)}٪)`;
+  document.getElementById("overallLabel").textContent = `${arNum(grandDone)} / ${arNum(totalDays)} يومًا (${arNum(pct)}٪)`;
+
+  const subtitleEl = document.getElementById("planSubtitle");
+  if(subtitleEl){
+    subtitleEl.textContent = planMode === "surah"
+      ? `١١٤ سورة · ${arNum(TOTAL_DAYS_SURAH)} يومًا · ٦ مجموعات + مرحلة ختامية`
+      : `٣٠ جزءًا · ٧٨٨ يومًا · ٦ مراحل رئيسة + مرحلة ختامية`;
+  }
 }
+
+function switchPlanMode(mode){
+  if(mode === planMode) return;
+  planMode = mode;
+  localStorage.setItem(PLAN_MODE_KEY, mode);
+  updateModeButtons();
+  renderActiveMode();
+  updateProgress();
+}
+
+function updateModeButtons(){
+  document.getElementById("modeBtnJuz").classList.toggle("active", planMode==="juz");
+  document.getElementById("modeBtnSurah").classList.toggle("active", planMode==="surah");
+}
+
+document.getElementById("modeBtnJuz").addEventListener("click", ()=> switchPlanMode("juz"));
+document.getElementById("modeBtnSurah").addEventListener("click", ()=> switchPlanMode("surah"));
+
+updateModeButtons();
+renderActiveMode();
 updateProgress();
 
 /* ============ SETTINGS / ABOUT MODALS ============ */
@@ -535,29 +809,30 @@ document.querySelectorAll(".modal-overlay").forEach(ov=>{
   ov.addEventListener("click", (e)=>{ if(e.target === ov) ov.classList.remove("show"); });
 });
 
-// IMPORTANT: no "await" happens before navigator.share() below — calling it after an
-// async gap can silently lose the browser's required user-gesture and do nothing.
+// Browsers/Android treat .apk as a "dangerous" file type and refuse to share it
+// through the native Web Share sheet (navigator.canShare returns false for it).
+// So instead: download the file straight to the device with one tap, then tell
+// the person to attach it manually as a document in WhatsApp/Telegram — that part
+// always works.
 document.getElementById("shareAppBtn").addEventListener("click", ()=>{
-  if(cachedApkFile && navigator.canShare && navigator.canShare({ files: [cachedApkFile] })){
-    navigator.share({
-      files: [cachedApkFile],
-      title: "خطّة لحفظ القرآن",
-      text: "طبّق خطة عملية لحفظ القرآن الكريم كاملًا 📖"
-    }).catch(()=>{ /* user cancelled */ });
-    return;
-  }
+  const url = cachedApkFile ? URL.createObjectURL(cachedApkFile) : "./app.apk";
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = APK_FILENAME;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  closeModal("settingsOverlay");
+  showCelebration("تم تحميل ملف التطبيق 📥\nافتح واتساب/تيليجرام واختر «إرفاق ملف» ثم اختر الملف من مجلد التنزيلات لإرساله لأي شخص.");
+});
 
-  const shareData = {
-    title: "خطّة لحفظ القرآن",
-    text: "طبّق خطة عملية لحفظ القرآن الكريم كاملًا مع متابعة يومية للحفظ والمراجعة 📖",
-    url: APP_URL
-  };
-  if(navigator.share){
-    navigator.share(shareData).catch(()=>{ /* user cancelled */ });
-  } else if(navigator.clipboard){
+document.getElementById("copyLinkBtn").addEventListener("click", ()=>{
+  if(navigator.clipboard){
     navigator.clipboard.writeText(APP_URL)
       .then(()=> alert("تم نسخ رابط التطبيق، شاركه مع من تحب 📤"))
       .catch(()=> alert(APP_URL));
+  } else if(navigator.share){
+    navigator.share({ title:"خطّة لحفظ القرآن", url: APP_URL }).catch(()=>{});
   } else {
     alert(APP_URL);
   }
@@ -581,23 +856,33 @@ function isJuzComplete(n){
   return true;
 }
 
+function isSurahComplete(s){
+  for(let i=1;i<=s.pages;i++){ if(!isDone("sur"+s.n+"-new-"+i)) return false; }
+  for(let i=1;i<=s.cons;i++){ if(!isDone("sur"+s.n+"-cons-"+i)) return false; }
+  return true;
+}
+
 function checkCelebrations(){
   let msgToShow = null;
+  const totalDays = planMode === "surah" ? TOTAL_DAYS_SURAH : TOTAL_DAYS_JUZ;
+  const groups = planMode === "surah" ? surahGroups : stages;
+  const counter = planMode === "surah" ? countSurahGroupDone : countStageDone;
 
   // Priority 1: entire plan complete
   let grandDone = 0;
-  stages.forEach(stage=> grandDone += countStageDone(stage).done);
+  groups.forEach(g=> grandDone += counter(g).done);
   const {done: fDone, total: fTotal} = countFinalDone();
   grandDone += fDone;
-  if(grandDone===TOTAL_DAYS && !state["celeb-all"]){
-    state["celeb-all"] = true;
+  const allFlag = "celeb-all-"+planMode;
+  if(grandDone===totalDays && !state[allFlag]){
+    state[allFlag] = true;
     msgToShow = "مبارك لك حفظ كتاب الله ونفع الله بك🤲🏻✨";
   }
 
-  // Priority 2: a main stage or the final stage complete
-  stages.forEach(stage=>{
-    const {done,total} = countStageDone(stage);
-    const flagKey = "celeb-"+stage.id;
+  // Priority 2: a group/stage or the final stage complete
+  groups.forEach(g=>{
+    const {done,total} = counter(g);
+    const flagKey = "celeb-"+g.id;
     if(total>0 && done===total && !state[flagKey]){
       state[flagKey] = true;
       if(!msgToShow) msgToShow = "ما شاء الله قد أتممت المرحلة✨\nثبّتك الله 🤲🏻";
@@ -608,14 +893,24 @@ function checkCelebrations(){
     if(!msgToShow) msgToShow = "ما شاء الله قد أتممت المرحلة✨\nثبّتك الله 🤲🏻";
   }
 
-  // Priority 3: a single juz fully memorized + consolidated
-  juzList.forEach(j=>{
-    const flagKey = "celeb-juz-"+j.n;
-    if(isJuzComplete(j.n) && !state[flagKey]){
-      state[flagKey] = true;
-      if(!msgToShow) msgToShow = "ما شاء الله لقد أتممت حفظ جزء✨\nثبّتك الله وبارك في همّتك🤲🏻";
-    }
-  });
+  // Priority 3: a single juz or surah fully memorized + consolidated
+  if(planMode === "surah"){
+    surahList.forEach(s=>{
+      const flagKey = "celeb-sur-"+s.n;
+      if(isSurahComplete(s) && !state[flagKey]){
+        state[flagKey] = true;
+        if(!msgToShow) msgToShow = "ما شاء الله لقد أتممت حفظ سورة✨\nثبّتك الله وبارك في همّتك🤲🏻";
+      }
+    });
+  } else {
+    juzList.forEach(j=>{
+      const flagKey = "celeb-juz-"+j.n;
+      if(isJuzComplete(j.n) && !state[flagKey]){
+        state[flagKey] = true;
+        if(!msgToShow) msgToShow = "ما شاء الله لقد أتممت حفظ جزء✨\nثبّتك الله وبارك في همّتك🤲🏻";
+      }
+    });
+  }
 
   if(msgToShow){ showCelebration(msgToShow); saveState(); }
 }
@@ -624,27 +919,42 @@ function checkCelebrations(){
 // (so re-opening the app doesn't pop congratulation messages for old progress)
 (function primeCelebrationFlags(){
   let changed = false;
+
   stages.forEach(stage=>{
     const {done,total} = countStageDone(stage);
     const flagKey = "celeb-"+stage.id;
     if(total>0 && done===total && !state[flagKey]){ state[flagKey]=true; changed=true; }
   });
+  surahGroups.forEach(group=>{
+    const {done,total} = countSurahGroupDone(group);
+    const flagKey = "celeb-"+group.id;
+    if(total>0 && done===total && !state[flagKey]){ state[flagKey]=true; changed=true; }
+  });
+
   const {done: fDone, total: fTotal} = countFinalDone();
   if(fTotal>0 && fDone===fTotal && !state["celeb-sf"]){ state["celeb-sf"]=true; changed=true; }
-  let grandDone = 0;
-  stages.forEach(stage=> grandDone += countStageDone(stage).done);
-  grandDone += fDone;
-  if(grandDone===TOTAL_DAYS && !state["celeb-all"]){ state["celeb-all"]=true; changed=true; }
+
+  let grandDoneJuz = 0;
+  stages.forEach(stage=> grandDoneJuz += countStageDone(stage).done);
+  grandDoneJuz += fDone;
+  if(grandDoneJuz===TOTAL_DAYS_JUZ && !state["celeb-all-juz"]){ state["celeb-all-juz"]=true; changed=true; }
+
+  let grandDoneSurah = 0;
+  surahGroups.forEach(group=> grandDoneSurah += countSurahGroupDone(group).done);
+  grandDoneSurah += fDone;
+  if(grandDoneSurah===TOTAL_DAYS_SURAH && !state["celeb-all-surah"]){ state["celeb-all-surah"]=true; changed=true; }
+
   juzList.forEach(j=>{
     const flagKey = "celeb-juz-"+j.n;
     if(isJuzComplete(j.n) && !state[flagKey]){ state[flagKey]=true; changed=true; }
   });
+  surahList.forEach(s=>{
+    const flagKey = "celeb-sur-"+s.n;
+    if(isSurahComplete(s) && !state[flagKey]){ state[flagKey]=true; changed=true; }
+  });
+
   if(changed) saveState();
 })();
-
-
-// open first stage by default
-document.getElementById("s1").classList.add("open");
 
 document.getElementById("resetBtn").addEventListener("click", ()=>{
   if(confirm("هل أنت متأكد من إعادة تعيين كل التقدّم؟ لا يمكن التراجع عن هذا.")){
