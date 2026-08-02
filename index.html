@@ -210,15 +210,24 @@
   .about-text{
     font-size:12.5px; line-height:1.9; color:var(--ink); text-align:right; margin-bottom:16px;
   }
-  .plan-mode-switch{
-    display:flex; gap:8px; background:#fffdf7; border:1px solid var(--line); border-radius:12px;
-    padding:5px; margin-bottom:14px;
+  .plan-mode-cards{
+    display:flex; flex-direction:column; gap:10px; margin-bottom:16px;
   }
-  .plan-mode-btn{
-    flex:1; text-align:center; padding:9px 6px; border-radius:9px; font-size:12.5px;
-    border:none; background:transparent; color:var(--muted); cursor:pointer;
+  .plan-mode-card{
+    border:2px solid var(--line); border-radius:14px; background:#fffdf7;
+    padding:14px 16px; cursor:pointer; text-align:right;
+    transition: border-color .2s ease, background .2s ease;
   }
-  .plan-mode-btn.active{ background:var(--s1); color:#fff; font-weight:bold; }
+  .plan-mode-card.active{ border-color:var(--gold); background:var(--s1-l); }
+  .plan-mode-card .card-top{
+    display:flex; align-items:center; justify-content:space-between; margin-bottom:5px;
+  }
+  .plan-mode-card .card-title{ font-size:14.5px; font-weight:bold; }
+  .plan-mode-card .check-badge{
+    font-size:16px; color:var(--gold); opacity:0; transition:opacity .2s ease;
+  }
+  .plan-mode-card.active .check-badge{ opacity:1; }
+  .plan-mode-card .card-desc{ font-size:11.5px; color:var(--muted); line-height:1.7; }
 </style>
 </head>
 <body>
@@ -278,9 +287,21 @@
   <div class="install-hint">
     📌 اضغط على كل مربع بعد إتمام يوم الحفظ أو المراجعة، ويُحفظ تقدّمك تلقائيًا على هذا الجهاز.
   </div>
-  <div class="plan-mode-switch">
-    <button class="plan-mode-btn" id="modeBtnJuz">بالأجزاء (صفحة/يوم)</button>
-    <button class="plan-mode-btn" id="modeBtnSurah">بالسور (حسب صفحات كل سورة)</button>
+  <div class="plan-mode-cards">
+    <div class="plan-mode-card" id="modeBtnJuz">
+      <div class="card-top">
+        <span class="card-title">📖 بالأجزاء</span>
+        <span class="check-badge">✔</span>
+      </div>
+      <div class="card-desc">الخطة التقليدية: صفحة واحدة كل يوم، بالتساوي على كل الثلاثين جزءًا (٧٨٨ يومًا إجمالًا).</div>
+    </div>
+    <div class="plan-mode-card" id="modeBtnSurah">
+      <div class="card-top">
+        <span class="card-title">📚 بالسور</span>
+        <span class="check-badge">✔</span>
+      </div>
+      <div class="card-desc">حسب طول كل سورة: عدد أيام حفظها = عدد صفحاتها الفعلي (١١٤ سورة موزّعة على ٦ مجموعات).</div>
+    </div>
   </div>
   <div class="reminder-card">
     <h3>⏰ تذكير يومي بالورد</h3>
@@ -455,6 +476,7 @@ const surahList = [
 ];
 // Balanced grouping of the 114 surahs into 6 roughly-equal stages (by total day count)
 const surahGroupBoundaries = [5, 11, 22, 36, 59, 114]; // last surah number in each group
+const NEW_DAYS = 20;   // حفظ جديد (بوضع الأجزاء)
 const CONS_DAYS = 3;   // تثبيت الجزء
 const REVIEW_DAYS = 7; // تثبيت ومراجعة شاملة بعد كل ٥ أجزاء
 
