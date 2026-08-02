@@ -304,7 +304,7 @@
         <span class="card-title">📚 بالسور</span>
         <span class="check-badge">✔</span>
       </div>
-      <div class="card-desc">حسب طول كل سورة: عدد أيام حفظها = عدد صفحاتها الفعلي، مع أيام تثبيت بعد كل سورة (١١٤ سورة موزّعة على ٦ مجموعات، ٧٨٨ يومًا إجمالًا).</div>
+      <div class="card-desc">حسب طول كل سورة: عدد أيام حفظها = عدد صفحاتها الفعلي، مع ٣ أيام تثبيت بعد كل جزء و٧ أيام مراجعة شاملة بعد كل ٥ أجزاء (١١٤ سورة موزّعة على ٦ مجموعات، ٨١١ يومًا إجمالًا).</div>
     </div>
   </div>
   <div id="stagesContainer"></div>
@@ -354,120 +354,120 @@ const juzList = [
 ];
 
 const surahList = [
-  {n:1, name:"الفاتحة", pages:1, cons:1},
-  {n:2, name:"البقرة", pages:48, cons:5},
-  {n:3, name:"آل عمران", pages:27, cons:3},
-  {n:4, name:"النساء", pages:29, cons:3},
-  {n:5, name:"المائدة", pages:22, cons:2},
-  {n:6, name:"الأنعام", pages:23, cons:2},
-  {n:7, name:"الأعراف", pages:26, cons:3},
-  {n:8, name:"الأنفال", pages:10, cons:1},
-  {n:9, name:"التوبة", pages:21, cons:2},
-  {n:10, name:"يونس", pages:13, cons:1},
-  {n:11, name:"هود", pages:14, cons:1},
-  {n:12, name:"يوسف", pages:14, cons:1},
-  {n:13, name:"الرعد", pages:6, cons:1},
-  {n:14, name:"إبراهيم", pages:7, cons:1},
-  {n:15, name:"الحجر", pages:5, cons:1},
-  {n:16, name:"النحل", pages:15, cons:1},
-  {n:17, name:"الإسراء", pages:11, cons:1},
-  {n:18, name:"الكهف", pages:12, cons:1},
-  {n:19, name:"مريم", pages:7, cons:1},
-  {n:20, name:"طه", pages:10, cons:1},
-  {n:21, name:"الأنبياء", pages:10, cons:1},
-  {n:22, name:"الحج", pages:10, cons:1},
-  {n:23, name:"المؤمنون", pages:8, cons:1},
-  {n:24, name:"النور", pages:9, cons:1},
-  {n:25, name:"الفرقان", pages:8, cons:1},
-  {n:26, name:"الشعراء", pages:10, cons:1},
-  {n:27, name:"النمل", pages:8, cons:1},
-  {n:28, name:"القصص", pages:11, cons:1},
-  {n:29, name:"العنكبوت", pages:8, cons:1},
-  {n:30, name:"الروم", pages:7, cons:1},
-  {n:31, name:"لقمان", pages:4, cons:1},
-  {n:32, name:"السجدة", pages:3, cons:1},
-  {n:33, name:"الأحزاب", pages:10, cons:1},
-  {n:34, name:"سبأ", pages:6, cons:1},
-  {n:35, name:"فاطر", pages:6, cons:1},
-  {n:36, name:"يس", pages:6, cons:1},
-  {n:37, name:"الصافات", pages:7, cons:1},
-  {n:38, name:"ص", pages:5, cons:1},
-  {n:39, name:"الزمر", pages:9, cons:1},
-  {n:40, name:"غافر", pages:10, cons:1},
-  {n:41, name:"فصلت", pages:6, cons:1},
-  {n:42, name:"الشورى", pages:6, cons:1},
-  {n:43, name:"الزخرف", pages:7, cons:1},
-  {n:44, name:"الدخان", pages:3, cons:1},
-  {n:45, name:"الجاثية", pages:3, cons:1},
-  {n:46, name:"الأحقاف", pages:5, cons:1},
-  {n:47, name:"محمد", pages:4, cons:1},
-  {n:48, name:"الفتح", pages:4, cons:1},
-  {n:49, name:"الحجرات", pages:3, cons:1},
-  {n:50, name:"ق", pages:2, cons:1},
-  {n:51, name:"الذاريات", pages:3, cons:1},
-  {n:52, name:"الطور", pages:3, cons:1},
-  {n:53, name:"النجم", pages:2, cons:1},
-  {n:54, name:"القمر", pages:3, cons:1},
-  {n:55, name:"الرحمن", pages:3, cons:1},
-  {n:56, name:"الواقعة", pages:3, cons:1},
-  {n:57, name:"الحديد", pages:5, cons:1},
-  {n:58, name:"المجادلة", pages:3, cons:1},
-  {n:59, name:"الحشر", pages:4, cons:1},
-  {n:60, name:"الممتحنة", pages:2, cons:1},
-  {n:61, name:"الصف", pages:2, cons:1},
-  {n:62, name:"الجمعة", pages:1, cons:1},
-  {n:63, name:"المنافقون", pages:2, cons:1},
-  {n:64, name:"التغابن", pages:2, cons:1},
-  {n:65, name:"الطلاق", pages:2, cons:1},
-  {n:66, name:"التحريم", pages:2, cons:1},
-  {n:67, name:"الملك", pages:2, cons:1},
-  {n:68, name:"القلم", pages:2, cons:1},
-  {n:69, name:"الحاقة", pages:2, cons:1},
-  {n:70, name:"المعارج", pages:2, cons:1},
-  {n:71, name:"نوح", pages:2, cons:1},
-  {n:72, name:"الجن", pages:2, cons:1},
-  {n:73, name:"المزمل", pages:1, cons:1},
-  {n:74, name:"المدثر", pages:2, cons:1},
-  {n:75, name:"القيامة", pages:1, cons:1},
-  {n:76, name:"الإنسان", pages:2, cons:1},
-  {n:77, name:"المرسلات", pages:2, cons:1},
-  {n:78, name:"النبأ", pages:1, cons:1},
-  {n:79, name:"النازعات", pages:2, cons:1},
-  {n:80, name:"عبس", pages:1, cons:1},
-  {n:81, name:"التكوير", pages:1, cons:1},
-  {n:82, name:"الانفطار", pages:1, cons:1},
-  {n:83, name:"المطففين", pages:2, cons:1},
-  {n:84, name:"الانشقاق", pages:1, cons:1},
-  {n:85, name:"البروج", pages:1, cons:1},
-  {n:86, name:"الطارق", pages:1, cons:1},
-  {n:87, name:"الأعلى", pages:1, cons:1},
-  {n:88, name:"الغاشية", pages:1, cons:1},
-  {n:89, name:"الفجر", pages:1, cons:1},
-  {n:90, name:"البلد", pages:1, cons:1},
-  {n:91, name:"الشمس", pages:1, cons:1},
-  {n:92, name:"الليل", pages:1, cons:1},
-  {n:93, name:"الضحى", pages:1, cons:1},
-  {n:94, name:"الشرح", pages:1, cons:1},
-  {n:95, name:"التين", pages:1, cons:1},
-  {n:96, name:"العلق", pages:1, cons:1},
-  {n:97, name:"القدر", pages:1, cons:1},
-  {n:98, name:"البينة", pages:1, cons:1},
-  {n:99, name:"الزلزلة", pages:1, cons:1},
-  {n:100, name:"العاديات", pages:1, cons:0},
-  {n:101, name:"القارعة", pages:1, cons:0},
-  {n:102, name:"التكاثر", pages:1, cons:0},
-  {n:103, name:"العصر", pages:1, cons:0},
-  {n:104, name:"الهمزة", pages:1, cons:0},
-  {n:105, name:"الفيل", pages:1, cons:0},
-  {n:106, name:"قريش", pages:1, cons:0},
-  {n:107, name:"الماعون", pages:1, cons:0},
-  {n:108, name:"الكوثر", pages:1, cons:0},
-  {n:109, name:"الكافرون", pages:1, cons:0},
-  {n:110, name:"النصر", pages:1, cons:0},
-  {n:111, name:"المسد", pages:1, cons:0},
-  {n:112, name:"الاخلاص", pages:1, cons:0},
-  {n:113, name:"الفلق", pages:1, cons:0},
-  {n:114, name:"الناس", pages:1, cons:0},
+  {n:1, name:"الفاتحة", pages:1},
+  {n:2, name:"البقرة", pages:48},
+  {n:3, name:"آل عمران", pages:27},
+  {n:4, name:"النساء", pages:29},
+  {n:5, name:"المائدة", pages:22},
+  {n:6, name:"الأنعام", pages:23},
+  {n:7, name:"الأعراف", pages:26},
+  {n:8, name:"الأنفال", pages:10},
+  {n:9, name:"التوبة", pages:21},
+  {n:10, name:"يونس", pages:13},
+  {n:11, name:"هود", pages:14},
+  {n:12, name:"يوسف", pages:14},
+  {n:13, name:"الرعد", pages:6},
+  {n:14, name:"إبراهيم", pages:7},
+  {n:15, name:"الحجر", pages:5},
+  {n:16, name:"النحل", pages:15},
+  {n:17, name:"الإسراء", pages:11},
+  {n:18, name:"الكهف", pages:12},
+  {n:19, name:"مريم", pages:7},
+  {n:20, name:"طه", pages:10},
+  {n:21, name:"الأنبياء", pages:10},
+  {n:22, name:"الحج", pages:10},
+  {n:23, name:"المؤمنون", pages:8},
+  {n:24, name:"النور", pages:9},
+  {n:25, name:"الفرقان", pages:8},
+  {n:26, name:"الشعراء", pages:10},
+  {n:27, name:"النمل", pages:8},
+  {n:28, name:"القصص", pages:11},
+  {n:29, name:"العنكبوت", pages:8},
+  {n:30, name:"الروم", pages:7},
+  {n:31, name:"لقمان", pages:4},
+  {n:32, name:"السجدة", pages:3},
+  {n:33, name:"الأحزاب", pages:10},
+  {n:34, name:"سبأ", pages:6},
+  {n:35, name:"فاطر", pages:6},
+  {n:36, name:"يس", pages:6},
+  {n:37, name:"الصافات", pages:7},
+  {n:38, name:"ص", pages:5},
+  {n:39, name:"الزمر", pages:9},
+  {n:40, name:"غافر", pages:10},
+  {n:41, name:"فصلت", pages:6},
+  {n:42, name:"الشورى", pages:6},
+  {n:43, name:"الزخرف", pages:7},
+  {n:44, name:"الدخان", pages:3},
+  {n:45, name:"الجاثية", pages:3},
+  {n:46, name:"الأحقاف", pages:5},
+  {n:47, name:"محمد", pages:4},
+  {n:48, name:"الفتح", pages:4},
+  {n:49, name:"الحجرات", pages:3},
+  {n:50, name:"ق", pages:2},
+  {n:51, name:"الذاريات", pages:3},
+  {n:52, name:"الطور", pages:3},
+  {n:53, name:"النجم", pages:2},
+  {n:54, name:"القمر", pages:3},
+  {n:55, name:"الرحمن", pages:3},
+  {n:56, name:"الواقعة", pages:3},
+  {n:57, name:"الحديد", pages:5},
+  {n:58, name:"المجادلة", pages:3},
+  {n:59, name:"الحشر", pages:4},
+  {n:60, name:"الممتحنة", pages:2},
+  {n:61, name:"الصف", pages:2},
+  {n:62, name:"الجمعة", pages:1},
+  {n:63, name:"المنافقون", pages:2},
+  {n:64, name:"التغابن", pages:2},
+  {n:65, name:"الطلاق", pages:2},
+  {n:66, name:"التحريم", pages:2},
+  {n:67, name:"الملك", pages:2},
+  {n:68, name:"القلم", pages:2},
+  {n:69, name:"الحاقة", pages:2},
+  {n:70, name:"المعارج", pages:2},
+  {n:71, name:"نوح", pages:2},
+  {n:72, name:"الجن", pages:2},
+  {n:73, name:"المزمل", pages:1},
+  {n:74, name:"المدثر", pages:2},
+  {n:75, name:"القيامة", pages:1},
+  {n:76, name:"الإنسان", pages:2},
+  {n:77, name:"المرسلات", pages:2},
+  {n:78, name:"النبأ", pages:1},
+  {n:79, name:"النازعات", pages:2},
+  {n:80, name:"عبس", pages:1},
+  {n:81, name:"التكوير", pages:1},
+  {n:82, name:"الانفطار", pages:1},
+  {n:83, name:"المطففين", pages:2},
+  {n:84, name:"الانشقاق", pages:1},
+  {n:85, name:"البروج", pages:1},
+  {n:86, name:"الطارق", pages:1},
+  {n:87, name:"الأعلى", pages:1},
+  {n:88, name:"الغاشية", pages:1},
+  {n:89, name:"الفجر", pages:1},
+  {n:90, name:"البلد", pages:1},
+  {n:91, name:"الشمس", pages:1},
+  {n:92, name:"الليل", pages:1},
+  {n:93, name:"الضحى", pages:1},
+  {n:94, name:"الشرح", pages:1},
+  {n:95, name:"التين", pages:1},
+  {n:96, name:"العلق", pages:1},
+  {n:97, name:"القدر", pages:1},
+  {n:98, name:"البينة", pages:1},
+  {n:99, name:"الزلزلة", pages:1},
+  {n:100, name:"العاديات", pages:1},
+  {n:101, name:"القارعة", pages:1},
+  {n:102, name:"التكاثر", pages:1},
+  {n:103, name:"العصر", pages:1},
+  {n:104, name:"الهمزة", pages:1},
+  {n:105, name:"الفيل", pages:1},
+  {n:106, name:"قريش", pages:1},
+  {n:107, name:"الماعون", pages:1},
+  {n:108, name:"الكوثر", pages:1},
+  {n:109, name:"الكافرون", pages:1},
+  {n:110, name:"النصر", pages:1},
+  {n:111, name:"المسد", pages:1},
+  {n:112, name:"الاخلاص", pages:1},
+  {n:113, name:"الفلق", pages:1},
+  {n:114, name:"الناس", pages:1},
 ];
 // Balanced grouping of the 114 surahs into 6 roughly-equal stages (by total day count)
 const surahGroupBoundaries = [5, 11, 22, 36, 59, 114]; // last surah number in each group
@@ -505,6 +505,32 @@ const surahGroups = [];
       surahs: groupSurahs
     });
   });
+}
+
+// Build the ordered render plan for surah mode: surah cards interleaved with
+// a 3-day consolidation block after every 20 accumulated pages (a "juz"),
+// plus a 7-day review block after every 5th such consolidation.
+const surahRenderPlan = []; // flat list of {type:'surah'|'juzcons'|'review', groupId, ...}
+{
+  let runningPages = 0;
+  let juzCount = 0;
+  surahGroups.forEach(group=>{
+    group.surahs.forEach(s=>{
+      surahRenderPlan.push({type:"surah", groupId:group.id, data:s});
+      runningPages += s.pages;
+      while(runningPages >= NEW_DAYS){
+        runningPages -= NEW_DAYS;
+        juzCount++;
+        surahRenderPlan.push({type:"juzcons", groupId:group.id, index:juzCount});
+        if(juzCount % 5 === 0){
+          surahRenderPlan.push({type:"review", groupId:group.id, index:juzCount/5});
+        }
+      }
+    });
+  });
+}
+function surahPlanItemsForGroup(groupId){
+  return surahRenderPlan.filter(it => it.groupId === groupId);
 }
 
 const PLAN_MODE_KEY = "hifz_plan_mode";
@@ -647,24 +673,32 @@ function renderSurahMode(){
     const body = document.createElement("div");
     body.className = "stage-body";
 
-    group.surahs.forEach(s=>{
-      const card = document.createElement("div");
-      card.className = "juz-card";
-      card.innerHTML = `
-        <div class="juz-title">سورة ${s.name}</div>
-        <div class="juz-range">${arNum(s.pages)} ${s.pages===1?"صفحة":"صفحات"}</div>
-        <div class="group-label">حفظ جديد (صفحة واحدة/يوم)</div>
-      `;
-      card.appendChild(makeCheckRow("sur"+s.n+"-new", s.pages));
-      if(s.cons > 0){
-        const consLabel = document.createElement("div");
-        consLabel.className = "group-label";
-        consLabel.textContent = "تثبيت السورة (تسميع كامل/يوم)";
-        card.appendChild(consLabel);
-        card.appendChild(makeCheckRow("sur"+s.n+"-cons", s.cons));
+    surahPlanItemsForGroup(group.id).forEach(item=>{
+      if(item.type === "surah"){
+        const s = item.data;
+        const card = document.createElement("div");
+        card.className = "juz-card";
+        card.innerHTML = `
+          <div class="juz-title">سورة ${s.name}</div>
+          <div class="juz-range">${arNum(s.pages)} ${s.pages===1?"صفحة":"صفحات"}</div>
+          <div class="group-label">حفظ جديد (صفحة واحدة/يوم)</div>
+        `;
+        card.appendChild(makeCheckRow("sur"+s.n+"-new", s.pages));
+        card.appendChild(makeNotesBox("sur"+s.n+"-notes"));
+        body.appendChild(card);
+      } else if(item.type === "juzcons"){
+        const consWrap = document.createElement("div");
+        consWrap.className = "review-row";
+        consWrap.innerHTML = `<div class="group-label">تثبيت الجزء ${arNum(item.index)} (تسميع كامل/يوم)</div>`;
+        consWrap.appendChild(makeCheckRow("surjuz"+item.index+"-cons", CONS_DAYS));
+        body.appendChild(consWrap);
+      } else if(item.type === "review"){
+        const reviewWrap = document.createElement("div");
+        reviewWrap.className = "review-row";
+        reviewWrap.innerHTML = `<div class="group-label">تثبيت ومراجعة شاملة للأجزاء ${arNum((item.index-1)*5+1)}-${arNum(item.index*5)}</div>`;
+        reviewWrap.appendChild(makeCheckRow("surreview"+item.index, REVIEW_DAYS));
+        body.appendChild(reviewWrap);
       }
-      card.appendChild(makeNotesBox("sur"+s.n+"-notes"));
-      body.appendChild(card);
     });
 
     el.appendChild(body);
@@ -717,7 +751,12 @@ function renderActiveMode(){
 
 /* ============ PROGRESS ============ */
 const TOTAL_DAYS_JUZ = 6*(5*(NEW_DAYS+CONS_DAYS)+REVIEW_DAYS) + finalBlocks.length*14; // 788
-const TOTAL_DAYS_SURAH = surahList.reduce((sum,s)=> sum + s.pages + s.cons, 0) + finalBlocks.length*14;
+const TOTAL_DAYS_SURAH = surahRenderPlan.reduce((sum,item)=>{
+  if(item.type === "surah") return sum + item.data.pages;
+  if(item.type === "juzcons") return sum + CONS_DAYS;
+  if(item.type === "review") return sum + REVIEW_DAYS;
+  return sum;
+}, 0) + finalBlocks.length*14;
 
 function countStageDone(stage){
   let done=0, total=0;
@@ -731,9 +770,15 @@ function countStageDone(stage){
 
 function countSurahGroupDone(group){
   let done=0, total=0;
-  group.surahs.forEach(s=>{
-    for(let i=1;i<=s.pages;i++){ total++; if(isDone("sur"+s.n+"-new-"+i)) done++; }
-    for(let i=1;i<=s.cons;i++){ total++; if(isDone("sur"+s.n+"-cons-"+i)) done++; }
+  surahPlanItemsForGroup(group.id).forEach(item=>{
+    if(item.type === "surah"){
+      const s = item.data;
+      for(let i=1;i<=s.pages;i++){ total++; if(isDone("sur"+s.n+"-new-"+i)) done++; }
+    } else if(item.type === "juzcons"){
+      for(let i=1;i<=CONS_DAYS;i++){ total++; if(isDone("surjuz"+item.index+"-cons-"+i)) done++; }
+    } else if(item.type === "review"){
+      for(let i=1;i<=REVIEW_DAYS;i++){ total++; if(isDone("surreview"+item.index+"-"+i)) done++; }
+    }
   });
   return {done, total};
 }
@@ -879,7 +924,6 @@ function isJuzComplete(n){
 
 function isSurahComplete(s){
   for(let i=1;i<=s.pages;i++){ if(!isDone("sur"+s.n+"-new-"+i)) return false; }
-  for(let i=1;i<=s.cons;i++){ if(!isDone("sur"+s.n+"-cons-"+i)) return false; }
   return true;
 }
 
