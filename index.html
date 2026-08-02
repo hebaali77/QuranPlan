@@ -120,22 +120,13 @@
     border-radius:8px; font-size:12.5px; cursor:pointer;
   }
   .tip{font-size:11px; color:var(--muted); margin-top:10px; line-height:1.7;}
-  .install-hint{
-    font-size:11.5px; background:var(--s1-l); border:1px solid var(--line); border-radius:10px;
-    padding:10px 12px; margin:0 0 14px; color:#333; line-height:1.8;
-  }
   .notes-label{font-size:11.5px; font-weight:bold; margin:10px 0 5px; color:var(--ink);}
   .notes-box{
     width:100%; min-height:44px; resize:vertical;
     border:1px solid var(--line); border-radius:8px; padding:6px 8px;
     font-family:inherit; font-size:12px; color:var(--ink); background:#fff;
   }
-  .reminder-card{
-    background:var(--card); border:1px solid var(--line); border-radius:14px;
-    padding:14px 16px; margin-bottom:16px;
-  }
-  .reminder-card h3{margin:0 0 8px; font-size:14px;}
-  .reminder-row{display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
+  .reminder-row{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:6px;}
   .reminder-row input[type="time"]{
     border:1px solid var(--line); border-radius:8px; padding:6px 8px; font-size:13px; font-family:inherit;
   }
@@ -210,6 +201,9 @@
   .about-text{
     font-size:12.5px; line-height:1.9; color:var(--ink); text-align:right; margin-bottom:16px;
   }
+  .plan-choose-heading{
+    font-size:14.5px; font-weight:bold; color:var(--ink); margin:4px 0 10px; text-align:center;
+  }
   .plan-mode-cards{
     display:flex; flex-direction:column; gap:10px; margin-bottom:16px;
   }
@@ -242,10 +236,21 @@
 <div id="settingsOverlay" class="modal-overlay">
   <div class="modal-sheet">
     <div class="modal-title">⚙️ الإعدادات</div>
-    <div class="modal-row" id="shareAppBtn"><span class="emoji">📥</span> تحميل ملف التطبيق (لإرساله كملف APK)</div>
-    <div class="modal-row" id="copyLinkBtn"><span class="emoji">🔗</span> نسخ رابط الموقع</div>
+    <div class="modal-row" id="shareAppBtn"><span class="emoji">📤</span> مشاركة التطبيق</div>
     <a class="modal-row" id="feedbackBtn" href="#" target="_blank" rel="noopener"><span class="emoji">💬</span> ملاحظات واقتراحات</a>
     <button class="modal-close-btn" data-close="settingsOverlay">إغلاق</button>
+  </div>
+</div>
+
+<div id="reminderOverlay" class="modal-overlay">
+  <div class="modal-sheet">
+    <div class="modal-title">⏰ تذكير يومي بالورد</div>
+    <div class="reminder-row">
+      <input type="time" id="reminderTime" value="20:00" />
+      <button class="reminder-btn" id="reminderToggleBtn">تفعيل التذكير</button>
+    </div>
+    <div class="reminder-status" id="reminderStatus">التذكير غير مفعّل حاليًا.</div>
+    <button class="modal-close-btn" data-close="reminderOverlay">إغلاق</button>
   </div>
 </div>
 
@@ -271,6 +276,7 @@
 
 <header>
   <div class="header-top-btns">
+    <button class="icon-btn" id="reminderBtn" aria-label="تذكير يومي">⏰</button>
     <button class="icon-btn" id="aboutBtn" aria-label="حول">ℹ️</button>
     <button class="icon-btn" id="settingsBtn" aria-label="الإعدادات">⚙️</button>
   </div>
@@ -284,34 +290,23 @@
 </header>
 
 <main>
-  <div class="install-hint">
-    📌 اضغط على كل مربع بعد إتمام يوم الحفظ أو المراجعة، ويُحفظ تقدّمك تلقائيًا على هذا الجهاز.
-  </div>
+  <div class="plan-choose-heading">اختر خطتك لتبدأ بها حفظك</div>
   <div class="plan-mode-cards">
     <div class="plan-mode-card" id="modeBtnJuz">
       <div class="card-top">
         <span class="card-title">📖 بالأجزاء</span>
         <span class="check-badge">✔</span>
       </div>
-      <div class="card-desc">الخطة التقليدية: صفحة واحدة كل يوم، بالتساوي على كل الثلاثين جزءًا (٧٨٨ يومًا إجمالًا).</div>
+      <div class="card-desc">صفحة واحدة كل يوم، بالتساوي على كل الثلاثين جزءًا (٧٨٨ يومًا إجمالًا).</div>
     </div>
     <div class="plan-mode-card" id="modeBtnSurah">
       <div class="card-top">
         <span class="card-title">📚 بالسور</span>
         <span class="check-badge">✔</span>
       </div>
-      <div class="card-desc">حسب طول كل سورة: عدد أيام حفظها = عدد صفحاتها الفعلي (١١٤ سورة موزّعة على ٦ مجموعات).</div>
+      <div class="card-desc">حسب طول كل سورة: عدد أيام حفظها = عدد صفحاتها الفعلي، مع أيام تثبيت بعد كل سورة (١١٤ سورة موزّعة على ٦ مجموعات، ٧٨٨ يومًا إجمالًا).</div>
     </div>
   </div>
-  <div class="reminder-card">
-    <h3>⏰ تذكير يومي بالورد</h3>
-    <div class="reminder-row">
-      <input type="time" id="reminderTime" value="20:00" />
-      <button class="reminder-btn" id="reminderToggleBtn">تفعيل التذكير</button>
-    </div>
-    <div class="reminder-status" id="reminderStatus">التذكير غير مفعّل حاليًا.</div>
-  </div>
-
   <div id="stagesContainer"></div>
 
   <footer>
@@ -360,45 +355,45 @@ const juzList = [
 
 const surahList = [
   {n:1, name:"الفاتحة", pages:1, cons:1},
-  {n:2, name:"البقرة", pages:48, cons:7},
-  {n:3, name:"آل عمران", pages:27, cons:4},
-  {n:4, name:"النساء", pages:29, cons:4},
-  {n:5, name:"المائدة", pages:22, cons:3},
-  {n:6, name:"الأنعام", pages:23, cons:3},
-  {n:7, name:"الأعراف", pages:26, cons:4},
-  {n:8, name:"الأنفال", pages:10, cons:2},
-  {n:9, name:"التوبة", pages:21, cons:3},
-  {n:10, name:"يونس", pages:13, cons:2},
-  {n:11, name:"هود", pages:14, cons:2},
-  {n:12, name:"يوسف", pages:14, cons:2},
+  {n:2, name:"البقرة", pages:48, cons:5},
+  {n:3, name:"آل عمران", pages:27, cons:3},
+  {n:4, name:"النساء", pages:29, cons:3},
+  {n:5, name:"المائدة", pages:22, cons:2},
+  {n:6, name:"الأنعام", pages:23, cons:2},
+  {n:7, name:"الأعراف", pages:26, cons:3},
+  {n:8, name:"الأنفال", pages:10, cons:1},
+  {n:9, name:"التوبة", pages:21, cons:2},
+  {n:10, name:"يونس", pages:13, cons:1},
+  {n:11, name:"هود", pages:14, cons:1},
+  {n:12, name:"يوسف", pages:14, cons:1},
   {n:13, name:"الرعد", pages:6, cons:1},
   {n:14, name:"إبراهيم", pages:7, cons:1},
   {n:15, name:"الحجر", pages:5, cons:1},
-  {n:16, name:"النحل", pages:15, cons:2},
-  {n:17, name:"الإسراء", pages:11, cons:2},
-  {n:18, name:"الكهف", pages:12, cons:2},
+  {n:16, name:"النحل", pages:15, cons:1},
+  {n:17, name:"الإسراء", pages:11, cons:1},
+  {n:18, name:"الكهف", pages:12, cons:1},
   {n:19, name:"مريم", pages:7, cons:1},
-  {n:20, name:"طه", pages:10, cons:2},
-  {n:21, name:"الأنبياء", pages:10, cons:2},
-  {n:22, name:"الحج", pages:10, cons:2},
+  {n:20, name:"طه", pages:10, cons:1},
+  {n:21, name:"الأنبياء", pages:10, cons:1},
+  {n:22, name:"الحج", pages:10, cons:1},
   {n:23, name:"المؤمنون", pages:8, cons:1},
   {n:24, name:"النور", pages:9, cons:1},
   {n:25, name:"الفرقان", pages:8, cons:1},
-  {n:26, name:"الشعراء", pages:10, cons:2},
+  {n:26, name:"الشعراء", pages:10, cons:1},
   {n:27, name:"النمل", pages:8, cons:1},
-  {n:28, name:"القصص", pages:11, cons:2},
+  {n:28, name:"القصص", pages:11, cons:1},
   {n:29, name:"العنكبوت", pages:8, cons:1},
   {n:30, name:"الروم", pages:7, cons:1},
   {n:31, name:"لقمان", pages:4, cons:1},
   {n:32, name:"السجدة", pages:3, cons:1},
-  {n:33, name:"الأحزاب", pages:10, cons:2},
+  {n:33, name:"الأحزاب", pages:10, cons:1},
   {n:34, name:"سبأ", pages:6, cons:1},
   {n:35, name:"فاطر", pages:6, cons:1},
   {n:36, name:"يس", pages:6, cons:1},
   {n:37, name:"الصافات", pages:7, cons:1},
   {n:38, name:"ص", pages:5, cons:1},
   {n:39, name:"الزمر", pages:9, cons:1},
-  {n:40, name:"غافر", pages:10, cons:2},
+  {n:40, name:"غافر", pages:10, cons:1},
   {n:41, name:"فصلت", pages:6, cons:1},
   {n:42, name:"الشورى", pages:6, cons:1},
   {n:43, name:"الزخرف", pages:7, cons:1},
@@ -458,21 +453,21 @@ const surahList = [
   {n:97, name:"القدر", pages:1, cons:1},
   {n:98, name:"البينة", pages:1, cons:1},
   {n:99, name:"الزلزلة", pages:1, cons:1},
-  {n:100, name:"العاديات", pages:1, cons:1},
-  {n:101, name:"القارعة", pages:1, cons:1},
-  {n:102, name:"التكاثر", pages:1, cons:1},
-  {n:103, name:"العصر", pages:1, cons:1},
-  {n:104, name:"الهمزة", pages:1, cons:1},
-  {n:105, name:"الفيل", pages:1, cons:1},
-  {n:106, name:"قريش", pages:1, cons:1},
-  {n:107, name:"الماعون", pages:1, cons:1},
-  {n:108, name:"الكوثر", pages:1, cons:1},
-  {n:109, name:"الكافرون", pages:1, cons:1},
-  {n:110, name:"النصر", pages:1, cons:1},
-  {n:111, name:"المسد", pages:1, cons:1},
-  {n:112, name:"الاخلاص", pages:1, cons:1},
-  {n:113, name:"الفلق", pages:1, cons:1},
-  {n:114, name:"الناس", pages:1, cons:1},
+  {n:100, name:"العاديات", pages:1, cons:0},
+  {n:101, name:"القارعة", pages:1, cons:0},
+  {n:102, name:"التكاثر", pages:1, cons:0},
+  {n:103, name:"العصر", pages:1, cons:0},
+  {n:104, name:"الهمزة", pages:1, cons:0},
+  {n:105, name:"الفيل", pages:1, cons:0},
+  {n:106, name:"قريش", pages:1, cons:0},
+  {n:107, name:"الماعون", pages:1, cons:0},
+  {n:108, name:"الكوثر", pages:1, cons:0},
+  {n:109, name:"الكافرون", pages:1, cons:0},
+  {n:110, name:"النصر", pages:1, cons:0},
+  {n:111, name:"المسد", pages:1, cons:0},
+  {n:112, name:"الاخلاص", pages:1, cons:0},
+  {n:113, name:"الفلق", pages:1, cons:0},
+  {n:114, name:"الناس", pages:1, cons:0},
 ];
 // Balanced grouping of the 114 surahs into 6 roughly-equal stages (by total day count)
 const surahGroupBoundaries = [5, 11, 22, 36, 59, 114]; // last surah number in each group
@@ -513,7 +508,7 @@ const surahGroups = [];
 }
 
 const PLAN_MODE_KEY = "hifz_plan_mode";
-let planMode = localStorage.getItem(PLAN_MODE_KEY) || "juz";
+let planMode = localStorage.getItem(PLAN_MODE_KEY) || null;
 
 function arNum(n){
   const d=["٠","١","٢","٣","٤","٥","٦","٧","٨","٩"];
@@ -661,11 +656,13 @@ function renderSurahMode(){
         <div class="group-label">حفظ جديد (صفحة واحدة/يوم)</div>
       `;
       card.appendChild(makeCheckRow("sur"+s.n+"-new", s.pages));
-      const consLabel = document.createElement("div");
-      consLabel.className = "group-label";
-      consLabel.textContent = "تثبيت السورة (تسميع كامل/يوم)";
-      card.appendChild(consLabel);
-      card.appendChild(makeCheckRow("sur"+s.n+"-cons", s.cons));
+      if(s.cons > 0){
+        const consLabel = document.createElement("div");
+        consLabel.className = "group-label";
+        consLabel.textContent = "تثبيت السورة (تسميع كامل/يوم)";
+        card.appendChild(consLabel);
+        card.appendChild(makeCheckRow("sur"+s.n+"-cons", s.cons));
+      }
       card.appendChild(makeNotesBox("sur"+s.n+"-notes"));
       body.appendChild(card);
     });
@@ -708,15 +705,14 @@ function renderFinalStage(){
 
 function renderActiveMode(){
   container.innerHTML = "";
+  if(!planMode) return; // no plan chosen yet — wait for the user to pick one
   if(planMode === "surah"){
     renderSurahMode();
   } else {
     renderJuzMode();
   }
   renderFinalStage();
-  // open first stage by default
-  const first = container.querySelector(".stage");
-  if(first) first.classList.add("open");
+  // stages start closed; the user opens the one they want
 }
 
 /* ============ PROGRESS ============ */
@@ -751,6 +747,13 @@ function countFinalDone(){
 }
 
 function updateProgress(){
+  const subtitleEl0 = document.getElementById("planSubtitle");
+  if(!planMode){
+    if(subtitleEl0) subtitleEl0.textContent = "اختر إحدى الخطتين أدناه لتبدأ رحلة حفظك";
+    document.getElementById("overallFill").style.width = "0%";
+    document.getElementById("overallLabel").textContent = "لم تبدأ الخطة بعد";
+    return;
+  }
   let grandDone = 0;
   const groups = planMode === "surah" ? surahGroups : stages;
   const counter = planMode === "surah" ? countSurahGroupDone : countStageDone;
@@ -785,12 +788,16 @@ function updateProgress(){
 }
 
 function switchPlanMode(mode){
+  const isFirstChoice = !planMode;
   if(mode === planMode) return;
   planMode = mode;
   localStorage.setItem(PLAN_MODE_KEY, mode);
   updateModeButtons();
   renderActiveMode();
   updateProgress();
+  if(isFirstChoice){
+    container.scrollIntoView({behavior:"smooth", block:"start"});
+  }
 }
 
 function updateModeButtons(){
@@ -804,9 +811,12 @@ document.getElementById("modeBtnSurah").addEventListener("click", ()=> switchPla
 updateModeButtons();
 renderActiveMode();
 updateProgress();
+if(!planMode){
+  const subtitleEl0 = document.getElementById("planSubtitle");
+  if(subtitleEl0) subtitleEl0.textContent = "اختر إحدى الخطتين أدناه لتبدأ رحلة حفظك";
+}
 
 /* ============ SETTINGS / ABOUT MODALS ============ */
-const APP_URL = "https://hebaali77.github.io/QuranPlan/";
 const FEEDBACK_WHATSAPP = "963981374689";
 
 document.getElementById("feedbackBtn").href =
@@ -824,6 +834,7 @@ function closeModal(id){ document.getElementById(id).classList.remove("show"); }
 
 document.getElementById("settingsBtn").addEventListener("click", ()=> openModal("settingsOverlay"));
 document.getElementById("aboutBtn").addEventListener("click", ()=> openModal("aboutOverlay"));
+document.getElementById("reminderBtn").addEventListener("click", ()=> openModal("reminderOverlay"));
 document.querySelectorAll("[data-close]").forEach(btn=>{
   btn.addEventListener("click", ()=> closeModal(btn.getAttribute("data-close")));
 });
@@ -846,18 +857,6 @@ document.getElementById("shareAppBtn").addEventListener("click", ()=>{
   a.remove();
   closeModal("settingsOverlay");
   showCelebration("تم تحميل ملف التطبيق 📥\nافتح واتساب/تيليجرام واختر «إرفاق ملف» ثم اختر الملف من مجلد التنزيلات لإرساله لأي شخص.");
-});
-
-document.getElementById("copyLinkBtn").addEventListener("click", ()=>{
-  if(navigator.clipboard){
-    navigator.clipboard.writeText(APP_URL)
-      .then(()=> alert("تم نسخ رابط التطبيق، شاركه مع من تحب 📤"))
-      .catch(()=> alert(APP_URL));
-  } else if(navigator.share){
-    navigator.share({ title:"خطّة لحفظ القرآن", url: APP_URL }).catch(()=>{});
-  } else {
-    alert(APP_URL);
-  }
 });
 
 /* ============ CELEBRATIONS ============ */
