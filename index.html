@@ -210,15 +210,21 @@
     font-size:15px; font-weight:bold; color:var(--ink); margin-bottom:12px;
   }
   .plan-picker-buttons{
-    display:flex; gap:10px;
+    display:flex; flex-direction:column; gap:10px;
   }
   .plan-pick-btn{
-    flex:1; border:2px solid var(--line); border-radius:12px; background:#fffdf7;
-    padding:14px 8px; font-size:14px; font-weight:bold; color:var(--ink);
-    cursor:pointer; transition: border-color .2s ease, background .2s ease;
-    font-family: inherit;
+    border:2px solid var(--line); border-radius:12px; background:#fffdf7;
+    padding:14px 16px; cursor:pointer; text-align:right;
+    transition: border-color .2s ease, background .2s ease;
+    font-family: inherit; display:flex; flex-direction:column; gap:5px;
   }
   .plan-pick-btn.active{ border-color:var(--gold); background:var(--card); box-shadow:0 0 0 2px var(--gold) inset; }
+  .pick-btn-title{ font-size:14.5px; font-weight:bold; color:var(--ink); }
+  .pick-btn-desc{ font-size:11.5px; color:var(--muted); line-height:1.7; }
+  .change-plan-btn{
+    background:none; border:none; color:var(--s1); font-size:13px; font-weight:bold;
+    padding:6px 0; margin-bottom:8px; cursor:pointer; font-family:inherit;
+  }
 </style>
 </head>
 <body>
@@ -279,22 +285,34 @@
   </div>
   <h1>خطة لحفظ القرآن الكريم كاملًا</h1>
   <p class="verse">﴿إِنَّا نَحْنُ نَزَّلْنَا الذِّكْرَ وَإِنَّا لَهُ لَحَافِظُونَ﴾</p>
-  <p id="planSubtitle">٣٠ جزءًا · ٧٨٨ يومًا · ٦ مراحل رئيسة + مرحلة ختامية</p>
-  <div class="progress-wrap">
-    <div class="progress-bar-bg"><div class="progress-bar-fill" id="overallFill"></div></div>
-    <div class="progress-label" id="overallLabel">٠ / ٧٨٨ يومًا (٠٪)</div>
-  </div>
 </header>
 
 <main>
-  <div class="plan-picker-box">
-    <div class="plan-picker-title">اختر خطتك لتبدأ بها الحفظ:</div>
-    <div class="plan-picker-buttons">
-      <button class="plan-pick-btn" id="modeBtnSurah">📚 بالسور</button>
-      <button class="plan-pick-btn" id="modeBtnJuz">📖 بالأجزاء</button>
+  <div id="pickerScreen">
+    <div class="plan-picker-box">
+      <div class="plan-picker-title">اختر خطتك لتبدأ بها الحفظ:</div>
+      <div class="plan-picker-buttons">
+        <button class="plan-pick-btn" id="modeBtnSurah">
+          <span class="pick-btn-title">📚 بالسور</span>
+          <span class="pick-btn-desc">احفظ كل سورة على حدة بحسب طولها، مع تثبيت ومراجعة بعد كل جزء</span>
+        </button>
+        <button class="plan-pick-btn" id="modeBtnJuz">
+          <span class="pick-btn-title">📖 بالأجزاء</span>
+          <span class="pick-btn-desc">صفحة واحدة كل يوم بالتساوي على الثلاثين جزءًا، مع تثبيت ومراجعة دورية</span>
+        </button>
+      </div>
     </div>
   </div>
-  <div id="stagesContainer"></div>
+
+  <div id="planScreen" style="display:none;">
+    <button class="change-plan-btn" id="changePlanBtn">‹ تغيير الخطة</button>
+    <p id="planSubtitle">٣٠ جزءًا · ٧٨٨ يومًا · ٦ مراحل رئيسة + مرحلة ختامية</p>
+    <div class="progress-wrap">
+      <div class="progress-bar-bg"><div class="progress-bar-fill" id="overallFill"></div></div>
+      <div class="progress-label" id="overallLabel">٠ / ٧٨٨ يومًا (٠٪)</div>
+    </div>
+    <div id="stagesContainer"></div>
+  </div>
 
   <footer>
     <button class="reset-btn" id="resetBtn">إعادة تعيين كل التقدّم</button>
@@ -875,17 +893,26 @@ function updateProgress(){
   }
 }
 
+function updateScreens(){
+  const pickerScreen = document.getElementById("pickerScreen");
+  const planScreen = document.getElementById("planScreen");
+  if(planMode){
+    pickerScreen.style.display = "none";
+    planScreen.style.display = "";
+  } else {
+    pickerScreen.style.display = "";
+    planScreen.style.display = "none";
+  }
+}
+
 function switchPlanMode(mode){
-  const isFirstChoice = !planMode;
   if(mode === planMode) return;
   planMode = mode;
   localStorage.setItem(PLAN_MODE_KEY, mode);
   updateModeButtons();
   renderActiveMode();
   updateProgress();
-  if(isFirstChoice){
-    container.scrollIntoView({behavior:"smooth", block:"start"});
-  }
+  updateScreens();
 }
 
 function updateModeButtons(){
@@ -895,10 +922,17 @@ function updateModeButtons(){
 
 document.getElementById("modeBtnJuz").addEventListener("click", ()=> switchPlanMode("juz"));
 document.getElementById("modeBtnSurah").addEventListener("click", ()=> switchPlanMode("surah"));
+document.getElementById("changePlanBtn").addEventListener("click", ()=>{
+  planMode = null;
+  localStorage.removeItem(PLAN_MODE_KEY);
+  updateModeButtons();
+  updateScreens();
+});
 
 updateModeButtons();
 renderActiveMode();
 updateProgress();
+updateScreens();
 if(!planMode){
   const subtitleEl0 = document.getElementById("planSubtitle");
   if(subtitleEl0) subtitleEl0.textContent = "اختر إحدى الخطتين أدناه لتبدأ رحلة حفظك";
